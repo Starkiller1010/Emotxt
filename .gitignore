@@ -112,3 +112,6 @@ rbs-db-user-setup.sql
 
 #node_modules ng
 node_modules/
+
+#Visual Studio Code
+.vscode/
