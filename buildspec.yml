@@ -1,0 +1,23 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      java: openjdk8
+  pre_build:
+    commands:
+      - echo Build started on `date`
+      # If we were trying to build an application that leverage the ojdbc7 jar
+      # (which cannot be obtained from the Maven central repo), we can use this 
+      # command to install it into this environment's .m2 directory. Assuming
+      # that the jar is available to us from some place.
+      #- mvn install:install-file -Dfile=./src/main/resources/ojdbc7-12.1.0.2.jar -DgroupId=com.oracle -DartifactId=ojdbc7 -Dversion=12.1.0.2 -Dpackaging=jar
+  build:
+    commands:
+      - mvn clean package
+      - mv target/Emotxt-0.0.1-SNAPSHOT.war ./Emotxt-0.0.1-SNAPSHOT.war
+    
+artifacts:
+  files:
+    - Emotxt-0.0.1-SNAPSHOT.war
+    - .ebextensions/**/*
