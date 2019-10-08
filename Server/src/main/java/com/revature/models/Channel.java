@@ -29,10 +29,6 @@ public class Channel {
     private int id; // Identification number that is unique
 
     @Column
-    @ManyToMany(mappedBy = "channels", cascade = CascadeType.REMOVE)
-    private List<MessageBoard> boards; // List of boards that have this Channel
-
-    @Column
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(name = "CHANNEL_USERS", joinColumns = @JoinColumn(referencedColumnName = "channel_id"), inverseJoinColumns = @JoinColumn(referencedColumnName = "user_id"))
     private List<User> members; // List of Users that are subscribed in this Channel

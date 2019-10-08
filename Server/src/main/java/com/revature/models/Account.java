@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -38,7 +39,7 @@ public class Account {
     @Column
     private String aboutMe;
 
-    @Column
+    @OneToMany
     private List<User> Friends = new ArrayList<>();
 
     public Account() {
