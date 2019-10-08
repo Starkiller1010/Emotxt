@@ -3,7 +3,13 @@ package com.revature.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -11,18 +17,28 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "ACCOUNTS")
+@SequenceGenerator(name="board_gen_id", allocationSize = 1, sequenceName = "board_seq_id")
 public class Account {
 
+    @Id
+    @Column(name = "account_id", nullable = false, unique = true)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
 
+    @Column
     private String country;
 
+    @Column
     private String state;
 
-    private int statusId;
+    @Column
+    @JoinColumn(name = "status_id")
+    private Status status;
 
+    @Column
     private String aboutMe;
 
+    @Column
     private List<User> Friends = new ArrayList<>();
 
     public Account() {
@@ -32,16 +48,15 @@ public class Account {
     public Account(String country, String state, String aboutMe, List<User> friends) {
         this.country = country;
         this.state = state;
-        this.statusId = 1;
         this.aboutMe = aboutMe;
         Friends = friends;
     }
 
-    public Account(int id, String country, String state, int statusId, String aboutMe, List<User> friends) {
+    public Account(int id, String country, String state, Status status, String aboutMe, List<User> friends) {
         this.id = id;
         this.country = country;
         this.state = state;
-        this.statusId = statusId;
+        this.status = status;
         this.aboutMe = aboutMe;
         Friends = friends;
     }
@@ -70,12 +85,12 @@ public class Account {
         this.state = state;
     }
 
-    public int getStatusId() {
-        return statusId;
+    public Status getstatus() {
+        return status;
     }
 
-    public void setStatusId(int statusId) {
-        this.statusId = statusId;
+    public void setstatus(Status status) {
+        this.status = status;
     }
 
     public String getAboutMe() {
@@ -95,6 +110,12 @@ public class Account {
     }
 
     @Override
+    public String toString() {
+        return "Account [Friends=" + Friends + ", aboutMe=" + aboutMe + ", country=" + country + ", id=" + id
+                + ", state=" + state + ", status=" + status + "]";
+    }
+
+    @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
@@ -103,7 +124,7 @@ public class Account {
         result = prime * result + ((country == null) ? 0 : country.hashCode());
         result = prime * result + id;
         result = prime * result + ((state == null) ? 0 : state.hashCode());
-        result = prime * result + statusId;
+        result = prime * result + ((status == null) ? 0 : status.hashCode());
         return result;
     }
 
@@ -138,14 +159,13 @@ public class Account {
                 return false;
         } else if (!state.equals(other.state))
             return false;
-        if (statusId != other.statusId)
+        if (status == null) {
+            if (other.status != null)
+                return false;
+        } else if (!status.equals(other.status))
             return false;
         return true;
     }
 
-    @Override
-    public String toString() {
-        return "Account [Friends=" + Friends + ", aboutMe=" + aboutMe + ", country=" + country + ", id=" + id
-                + ", state=" + state + ", statusId=" + statusId + "]";
-    }
+    
 }

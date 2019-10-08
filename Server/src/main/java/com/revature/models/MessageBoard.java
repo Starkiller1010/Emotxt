@@ -2,20 +2,41 @@ package com.revature.models;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
  * MessageBoard
  */
 @Entity
-@Table(name = "MESSAGE_BOARD")
+@Table(name = "MESSAGE_BOARDS")
+@SequenceGenerator(name="board_gen_id", allocationSize = 1, sequenceName = "board_seq_id")
 public class MessageBoard {
 
+    @Id
+    @Column(name = "board_id", nullable = false, unique = true)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
 
+    @Column
+    @OneToOne(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id", nullable = false)
     private int ownerId;
 
+    @Column
+    @ManyToMany
+    @JoinTable(name = "BOARD_CHANNELS", joinColumns = @JoinColumn(referencedColumnName = "board_id"), inverseJoinColumns = @JoinColumn(referencedColumnName = "channel_id"))
     private List<Channel> channels;
 
     public MessageBoard() {

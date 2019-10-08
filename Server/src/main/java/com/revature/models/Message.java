@@ -2,35 +2,57 @@ package com.revature.models;
 
 import java.sql.Timestamp;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  * Message
  */
+@Entity
+@Table(name = "MESSAGES")
+@SequenceGenerator(name="message_gen_id", allocationSize = 1, sequenceName = "message_seq_id")
 public class Message {
 
+    @Id
+    @Column(name = "message_id", nullable = false, unique = true)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
 
+    @Column
     private String body;
 
-    private int AuthorId;
+    @Column
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User Author;
 
+    @Column
     private Timestamp createdStamp;
 
+    @Column
     private int Tone;
 
     public Message() {
         super();
     }
 
-    public Message(String body, int authorId) {
+    public Message(String body, User author) {
         this.body = body;
-        AuthorId = authorId;
+        Author = author;
         this.createdStamp = new Timestamp(System.currentTimeMillis());
     }
 
-    public Message(int id, String body, int authorId, Timestamp createdStamp, int tone) {
+    public Message(int id, String body, User author, Timestamp createdStamp, int tone) {
         this.id = id;
         this.body = body;
-        AuthorId = authorId;
+        Author = author;
         this.createdStamp = createdStamp;
         Tone = tone;
     }
@@ -51,12 +73,12 @@ public class Message {
         this.body = body;
     }
 
-    public int getAuthorId() {
-        return AuthorId;
+    public User getAuthor() {
+        return Author;
     }
 
-    public void setAuthorId(int authorId) {
-        AuthorId = authorId;
+    public void setAuthor(User author) {
+        Author = author;
     }
 
     public Timestamp getCreatedStamp() {
@@ -79,7 +101,7 @@ public class Message {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + AuthorId;
+        result = prime * result + ((Author == null) ? 0 : Author.hashCode());
         result = prime * result + Tone;
         result = prime * result + ((body == null) ? 0 : body.hashCode());
         result = prime * result + ((createdStamp == null) ? 0 : createdStamp.hashCode());
@@ -96,7 +118,10 @@ public class Message {
         if (getClass() != obj.getClass())
             return false;
         Message other = (Message) obj;
-        if (AuthorId != other.AuthorId)
+        if (Author == null) {
+            if (other.Author != null)
+                return false;
+        } else if (!Author.equals(other.Author))
             return false;
         if (Tone != other.Tone)
             return false;
@@ -115,11 +140,12 @@ public class Message {
         return true;
     }
 
-	@Override
-	public String toString() {
-		return "Message [AuthorId=" + AuthorId + ", Tone=" + Tone + ", body=" + body + ", createdStamp=" + createdStamp
-				+ ", id=" + id + "]";
-	}
+    @Override
+    public String toString() {
+        return "Message [Author=" + Author + ", Tone=" + Tone + ", body=" + body + ", createdStamp=" + createdStamp
+                + ", id=" + id + "]";
+    }
+
 
     
 }
