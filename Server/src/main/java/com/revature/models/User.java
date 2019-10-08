@@ -10,6 +10,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -49,7 +51,16 @@ public class User {
     @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
     private List<Message> userMessages;
 
-    private List<User> friendList;
+    @ManyToMany
+    @JoinTable(
+        name = "FRIENDS",
+        joinColumns = @JoinColumn(referencedColumnName = "user_id"),
+        inverseJoinColumns =  @JoinColumn(referencedColumnName = "user_id")
+    )
+    private List<User> friendsList;
+
+    @ManyToMany(mappedBy = "friendsList")
+    private List<User> friends;
 
        
 }
