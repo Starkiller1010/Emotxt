@@ -20,5 +20,5 @@ phases:
     
 artifacts:
   files:
-    - Emotxt-0.0.1-SNAPSHOT.war
+    - Emotxt 0.0.1-SNAPSHOT.war
     - .ebextensions/**/*
