@@ -5,3 +5,4 @@ EmoTxt (Emotional Text) is a messaging app that seeks to improve the messaging e
 
 
 Test Line
+test line 2
