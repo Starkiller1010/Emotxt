@@ -39,7 +39,6 @@ public class User {
     @Column(nullable = false)
     private String email;
 
-    @Column
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(referencedColumnName = "account_id")
     private Account account;
