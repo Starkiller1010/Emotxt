@@ -1,5 +1,7 @@
 package com.revature.models;
 
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +10,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -25,7 +30,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String username;
 
     @Column(nullable = false)
@@ -34,35 +39,26 @@ public class User {
     @Column(nullable = false)
     private String email;
 
-    @Column
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(table = "ACCOUNTS", referencedColumnName = "account_id")
+    @JoinColumn(referencedColumnName = "account_id")
     private Account account;
 
-    @Column
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(table = "MESSAGE_BOARDS", referencedColumnName = "board_id")
-    private MessageBoard uBoard;
+    @ManyToMany(mappedBy = "members", fetch = FetchType.LAZY)
+    private List<Channel> channels;
 
-    public User() {
-        super();
-    }
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
+    private List<Message> userMessages;
 
-    public User(String username, String password, String email, Account account) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.account = account;
-    }
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+        name = "FRIENDS",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns =  @JoinColumn(name = "user_id")
+    )
+    private List<User> friendsList;
 
-    public User(int id, String username, String password, String email, Account account, MessageBoard uBoard) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.account = account;
-        this.uBoard = uBoard;
-    }
+    @ManyToMany(mappedBy = "friendsList")
+    private List<User> friends;
 
     public int getId() {
         return id;
@@ -104,12 +100,34 @@ public class User {
         this.account = account;
     }
 
-    public MessageBoard getuBoard() {
-        return uBoard;
+    public List<Channel> getChannels() {
+        return channels;
     }
 
-    public void setuBoard(MessageBoard uBoard) {
-        this.uBoard = uBoard;
+    public void setChannels(List<Channel> channels) {
+        this.channels = channels;
+    }
+
+    public List<Message> getUserMessages() {
+        return userMessages;
+    }
+
+    public void setUserMessages(List<Message> userMessages) {
+        this.userMessages = userMessages;
+    }
+
+    public List<User> getFriendsList() {
+        return friendsList;
+    }
+
+    public void setFriendsList(List<User> friendsList) {
+        this.friendsList = friendsList;
+    }
+
+    @Override
+    public String toString() {
+        return "User [account=" + account + ", email=" + email + ", id=" + id + ", password=" + password + ", username="
+                + username + "]";
     }
 
     @Override
@@ -120,7 +138,7 @@ public class User {
         result = prime * result + ((email == null) ? 0 : email.hashCode());
         result = prime * result + id;
         result = prime * result + ((password == null) ? 0 : password.hashCode());
-        result = prime * result + ((uBoard == null) ? 0 : uBoard.hashCode());
+        result = prime * result + ((userMessages == null) ? 0 : userMessages.hashCode());
         result = prime * result + ((username == null) ? 0 : username.hashCode());
         return result;
     }
@@ -151,10 +169,10 @@ public class User {
                 return false;
         } else if (!password.equals(other.password))
             return false;
-        if (uBoard == null) {
-            if (other.uBoard != null)
+        if (userMessages == null) {
+            if (other.userMessages != null)
                 return false;
-        } else if (!uBoard.equals(other.uBoard))
+        } else if (!userMessages.equals(other.userMessages))
             return false;
         if (username == null) {
             if (other.username != null)
@@ -163,12 +181,6 @@ public class User {
             return false;
         return true;
     }
-
-    @Override
-    public String toString() {
-        return "User [account=" + account + ", email=" + email + ", id=" + id + ", password=" + password + ", username="
-                + username + "]";
-    }
-
+    
     
 }

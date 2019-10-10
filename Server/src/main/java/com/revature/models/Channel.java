@@ -28,19 +28,21 @@ public class Channel {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id; // Identification number that is unique
 
-    @Column
-    @ManyToMany(mappedBy = "channels", cascade = CascadeType.REMOVE)
-    private List<MessageBoard> boards; // List of boards that have this Channel
-
-    @Column
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(name = "CHANNEL_USERS", joinColumns = @JoinColumn(referencedColumnName = "channel_id"), inverseJoinColumns = @JoinColumn(referencedColumnName = "user_id"))
     private List<User> members; // List of Users that are subscribed in this Channel
 
-    @Column
     @OneToMany
     @JoinColumn(name = "message_id")
     private List<Message> messages; // List of messages that have been made in this Channel
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+        name = "USER_ROLES",
+        joinColumns = @JoinColumn(referencedColumnName = "role_id"),
+        inverseJoinColumns = @JoinColumn(referencedColumnName = "user_id")
+    )
+    // private List<Role> assignedRoles;
 
     @Column
     private boolean open = true; // Boolean to check if the channel is public or private
@@ -49,15 +51,13 @@ public class Channel {
         super();
     }
 
-    public Channel(List<MessageBoard> boards, List<User> members, boolean open) {
-        this.boards = boards;
+    public Channel(List<User> members, boolean open) {
         this.members = members;
         this.open = open;
     }
 
-    public Channel(int id, List<MessageBoard> boards, List<User> members, List<Message> messages, boolean open) {
+    public Channel(int id, List<User> members, List<Message> messages, boolean open) {
         this.id = id;
-        this.boards = boards;
         this.members = members;
         this.messages = messages;
         this.open = open;
@@ -69,14 +69,6 @@ public class Channel {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public List<MessageBoard> getBoards() {
-        return boards;
-    }
-
-    public void setBoards(List<MessageBoard> boards) {
-        this.boards = boards;
     }
 
     public List<User> getMembers() {
@@ -107,7 +99,6 @@ public class Channel {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((boards == null) ? 0 : boards.hashCode());
         result = prime * result + id;
         result = prime * result + ((members == null) ? 0 : members.hashCode());
         result = prime * result + ((messages == null) ? 0 : messages.hashCode());
@@ -124,11 +115,6 @@ public class Channel {
         if (getClass() != obj.getClass())
             return false;
         Channel other = (Channel) obj;
-        if (boards == null) {
-            if (other.boards != null)
-                return false;
-        } else if (!boards.equals(other.boards))
-            return false;
         if (id != other.id)
             return false;
         if (members == null) {

@@ -2,6 +2,7 @@ package com.revature.models;
 
 import java.sql.Timestamp;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -28,15 +29,13 @@ public class Message {
     @Column
     private String body;
 
-    @Column
-    @ManyToOne
+    @ManyToOne(cascade =CascadeType.ALL)
     @JoinColumn(name = "user_id")
-    private User Author;
+    private User author;
 
     @Column
     private Timestamp createdStamp;
 
-    @Column
     private int Tone;
 
     public Message() {
@@ -45,14 +44,14 @@ public class Message {
 
     public Message(String body, User author) {
         this.body = body;
-        Author = author;
+        this.author = author;
         this.createdStamp = new Timestamp(System.currentTimeMillis());
     }
 
     public Message(int id, String body, User author, Timestamp createdStamp, int tone) {
         this.id = id;
         this.body = body;
-        Author = author;
+        this.author = author;
         this.createdStamp = createdStamp;
         Tone = tone;
     }
@@ -73,12 +72,12 @@ public class Message {
         this.body = body;
     }
 
-    public User getAuthor() {
-        return Author;
+    public User getauthor() {
+        return author;
     }
 
-    public void setAuthor(User author) {
-        Author = author;
+    public void setauthor(User author) {
+        this.author = author;
     }
 
     public Timestamp getCreatedStamp() {
@@ -101,7 +100,7 @@ public class Message {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((Author == null) ? 0 : Author.hashCode());
+        result = prime * result + ((author == null) ? 0 : author.hashCode());
         result = prime * result + Tone;
         result = prime * result + ((body == null) ? 0 : body.hashCode());
         result = prime * result + ((createdStamp == null) ? 0 : createdStamp.hashCode());
@@ -118,10 +117,10 @@ public class Message {
         if (getClass() != obj.getClass())
             return false;
         Message other = (Message) obj;
-        if (Author == null) {
-            if (other.Author != null)
+        if (author == null) {
+            if (other.author != null)
                 return false;
-        } else if (!Author.equals(other.Author))
+        } else if (!author.equals(other.author))
             return false;
         if (Tone != other.Tone)
             return false;
@@ -142,7 +141,7 @@ public class Message {
 
     @Override
     public String toString() {
-        return "Message [Author=" + Author + ", Tone=" + Tone + ", body=" + body + ", createdStamp=" + createdStamp
+        return "Message [author=" + author.getId() + ", Tone=" + Tone + ", body=" + body + ", createdStamp=" + createdStamp
                 + ", id=" + id + "]";
     }
 
