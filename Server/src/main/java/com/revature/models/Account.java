@@ -1,15 +1,11 @@
 package com.revature.models;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -18,7 +14,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "ACCOUNTS")
-@SequenceGenerator(name="board_gen_id", allocationSize = 1, sequenceName = "board_seq_id")
+@SequenceGenerator(name="account_gen_id", allocationSize = 1, sequenceName = "account_seq_id")
 public class Account {
 
     @Id
@@ -32,34 +28,28 @@ public class Account {
     @Column
     private String state;
 
-    @Column
     @JoinColumn(name = "status_id")
     private Status status;
 
     @Column
     private String aboutMe;
 
-    @OneToMany
-    private List<User> Friends = new ArrayList<>();
-
     public Account() {
         super();
     }
 
-    public Account(String country, String state, String aboutMe, List<User> friends) {
+    public Account(String country, String state, String aboutMe) {
         this.country = country;
         this.state = state;
         this.aboutMe = aboutMe;
-        Friends = friends;
     }
 
-    public Account(int id, String country, String state, Status status, String aboutMe, List<User> friends) {
+    public Account(int id, String country, String state, Status status, String aboutMe) {
         this.id = id;
         this.country = country;
         this.state = state;
         this.status = status;
         this.aboutMe = aboutMe;
-        Friends = friends;
     }
 
     public int getId() {
@@ -102,17 +92,9 @@ public class Account {
         this.aboutMe = aboutMe;
     }
 
-    public List<User> getFriends() {
-        return Friends;
-    }
-
-    public void setFriends(List<User> friends) {
-        Friends = friends;
-    }
-
     @Override
     public String toString() {
-        return "Account [Friends=" + Friends + ", aboutMe=" + aboutMe + ", country=" + country + ", id=" + id
+        return "Account [aboutMe=" + aboutMe + ", country=" + country + ", id=" + id
                 + ", state=" + state + ", status=" + status + "]";
     }
 
@@ -120,7 +102,6 @@ public class Account {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((Friends == null) ? 0 : Friends.hashCode());
         result = prime * result + ((aboutMe == null) ? 0 : aboutMe.hashCode());
         result = prime * result + ((country == null) ? 0 : country.hashCode());
         result = prime * result + id;
@@ -138,11 +119,6 @@ public class Account {
         if (getClass() != obj.getClass())
             return false;
         Account other = (Account) obj;
-        if (Friends == null) {
-            if (other.Friends != null)
-                return false;
-        } else if (!Friends.equals(other.Friends))
-            return false;
         if (aboutMe == null) {
             if (other.aboutMe != null)
                 return false;

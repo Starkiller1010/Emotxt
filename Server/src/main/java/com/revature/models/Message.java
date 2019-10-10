@@ -29,7 +29,6 @@ public class Message {
     @Column
     private String body;
 
-    @Column
     @ManyToOne(cascade =CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User author;
@@ -37,7 +36,6 @@ public class Message {
     @Column
     private Timestamp createdStamp;
 
-    @Column
     private int Tone;
 
     public Message() {
