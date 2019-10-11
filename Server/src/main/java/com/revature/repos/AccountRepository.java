@@ -38,7 +38,6 @@ public class AccountRepository {
 		if(persistentAccount == null) return false;
 		persistentAccount.setAboutMe(updatedAccount.getAboutMe());
 		persistentAccount.setCountry(updatedAccount.getCountry());
-		persistentAccount.setFriends(updatedAccount.getFriends());
 		persistentAccount.setState(updatedAccount.getState());
 		persistentAccount.setstatus(updatedAccount.getstatus());
 		return true;

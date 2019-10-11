@@ -34,7 +34,7 @@ public class MessageRepository {
 		Session session = factory.getCurrentSession();
 		Message persistentMessage = session.get(Message.class, updatedMessage.getId());
 		if(persistentMessage == null) return false;
-		persistentMessage.setAuthor(updatedMessage.getAuthor());
+		persistentMessage.setauthor(updatedMessage.getauthor());
 		persistentMessage.setBody(updatedMessage.getBody());
 		persistentMessage.setTone(updatedMessage.getTone());
 		return true;
