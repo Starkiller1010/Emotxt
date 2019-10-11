@@ -7,39 +7,45 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
 
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.WebApplicationInitializer;
+import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @EnableWebMvc
-@ComponentScan						// Enable Component scanning
-@EnableTransactionManagement		// Enable Spring's transaction management
-@PropertySource("app.properties")	// Specify properties file
+@ComponentScan									// Enable Component scanning
+@Configuration									// XML equivalent to <bean>
+@EnableTransactionManagement					// Enable Spring's transaction management
+@PropertySource("classpath:app.properties")		// Specify properties file
 
 public class AppConfig implements WebMvcConfigurer, WebApplicationInitializer {
 	
+	private Logger log = LogManager.getLogger(AppConfig.class);
 	// Interpolate database information and credentials from the properties file.
 	
-	@Value("${db.driver}")
+	@Value("${db.driverOracle}")
 	private String driver;
 	
-	@Value("${db.url}")
+	@Value("${db.urlOracle}")
 	private String url;
 	
-	@Value("${db.username}")
+	@Value("${db.usernameOracle}")
 	private String username;
 	
-	@Value("${db.password}")
+	@Value("${db.passwordOracle}")
 	private String password;
 	
 	/**
@@ -91,18 +97,16 @@ public class AppConfig implements WebMvcConfigurer, WebApplicationInitializer {
 	
 	/**
 	 * 
-	 * Reads from the properties file and assigns properties to
-	 * Hibernate.
+	 * Configures Hibernate properties.
 	 * 
 	 */
 	
-	@Bean
 	private Properties hibernateProperties() {
 		Properties props = new Properties();
-		props.setProperty("hibernate.connection.driver_class", driver);
-		props.setProperty("hibernate.connection.url", url);
-		props.setProperty("hibernate.connection.username", username);
-		props.setProperty("hibernate.connection.password", password);
+		props.setProperty("hibernate.dialect", "org.hibernate.dialect.Oracle10gDialect");
+        props.setProperty("hibernate.show_sql", "true");
+        props.setProperty("hibernate.format_sql", "true");
+        props.setProperty("hibernate.hbm2ddl.auto", "create-drop");
 		return props;
 	}
 	
@@ -120,8 +124,11 @@ public class AppConfig implements WebMvcConfigurer, WebApplicationInitializer {
 	public void onStartup(ServletContext servletContext) throws ServletException {
 		AnnotationConfigWebApplicationContext container = new AnnotationConfigWebApplicationContext();
 		container.register(AppConfig.class);
+		servletContext.addListener(new ContextLoaderListener(container));
+		log.info("Setting up dispatcher.");
 		ServletRegistration.Dynamic dispatcher = servletContext.addServlet("DispatcherServlet", new DispatcherServlet(container));
 		dispatcher.setLoadOnStartup(1);
 		dispatcher.addMapping("/");
+		log.info("Mapping successful.");
 	}
 }
