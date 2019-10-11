@@ -52,13 +52,11 @@ public class User {
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
         name = "FRIENDS",
-        joinColumns = @JoinColumn(name = "user_id"),
-        inverseJoinColumns =  @JoinColumn(name = "user_id")
+        joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
+        inverseJoinColumns =  @JoinColumn(name = "friend_id", referencedColumnName = "user_id")
     )
     private List<User> friendsList;
 
-    @ManyToMany(mappedBy = "friendsList")
-    private List<User> friends;
 
     public int getId() {
         return id;
@@ -114,14 +112,6 @@ public class User {
 
     public void setUserMessages(List<Message> userMessages) {
         this.userMessages = userMessages;
-    }
-
-    public List<User> getFriendsList() {
-        return friendsList;
-    }
-
-    public void setFriendsList(List<User> friendsList) {
-        this.friendsList = friendsList;
     }
 
     @Override
