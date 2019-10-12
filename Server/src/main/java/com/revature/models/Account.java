@@ -1,11 +1,16 @@
 package com.revature.models;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -29,122 +34,124 @@ public class Account {
     @Column
     private String state;
     
-    @OneToOne
-    @JoinColumn(name = "status_id")
-    private Status status;
-
     @Column
-    private String aboutMe;
+    private String bio;
+    
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+        name = "FRIENDS",
+        joinColumns = @JoinColumn(name = "account_id", referencedColumnName = "account_id"),
+        inverseJoinColumns =  @JoinColumn(name = "friend_id", referencedColumnName = "user_id")
+    )
+    private List<User> friendsList;
+    
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+        name = "CHANNELS",
+        joinColumns = @JoinColumn(name = "account_id", referencedColumnName = "account_id"),
+        inverseJoinColumns =  @JoinColumn(name = "channel_id", referencedColumnName = "channel_id")
+    )
+    private List<Channel> subscriptions;
 
     public Account() {
         super();
     }
 
-    public Account(String country, String state, String aboutMe) {
+    public Account(String country, String state, String bio) {
         this.country = country;
         this.state = state;
-        this.aboutMe = aboutMe;
+        this.bio = bio;
     }
 
-    public Account(int id, String country, String state, Status status, String aboutMe) {
+    public Account(int id, String country, String state, Status status, String bio) {
         this.id = id;
         this.country = country;
         this.state = state;
-        this.status = status;
-        this.aboutMe = aboutMe;
+        this.bio = bio;
     }
 
-    public int getId() {
-        return id;
-    }
+	public Account(int id, String country, String state, String bio, List<User> friendsList,
+			List<Channel> subscriptions) {
+		super();
+		this.id = id;
+		this.country = country;
+		this.state = state;
+		this.bio = bio;
+		//this.friendsList = friendsList;
+		//this.subscriptions = subscriptions;
+	}
 
-    public void setId(int id) {
-        this.id = id;
-    }
+	public Account(String country, String state, String bio, List<User> friendsList, List<Channel> subscriptions) {
+		super();
+		this.country = country;
+		this.state = state;
+		this.bio = bio;
+		//this.friendsList = friendsList;
+		//this.subscriptions = subscriptions;
+	}
 
-    public String getCountry() {
-        return country;
-    }
+	public Account(String bio, List<User> friendsList, List<Channel> subscriptions) {
+		super();
+		this.bio = bio;
+		//this.friendsList = friendsList;
+		//this.subscriptions = subscriptions;
+	}
 
-    public void setCountry(String country) {
-        this.country = country;
-    }
+	public Account(List<User> friendsList, List<Channel> subscriptions) {
+		super();
+		//this.friendsList = friendsList;
+		//this.subscriptions = subscriptions;
+	}
 
-    public String getState() {
-        return state;
-    }
+	public int getId() {
+		return id;
+	}
 
-    public void setState(String state) {
-        this.state = state;
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    public Status getstatus() {
-        return status;
-    }
+	public String getCountry() {
+		return country;
+	}
 
-    public void setstatus(Status status) {
-        this.status = status;
-    }
+	public void setCountry(String country) {
+		this.country = country;
+	}
 
-    public String getAboutMe() {
-        return aboutMe;
-    }
+	public String getState() {
+		return state;
+	}
 
-    public void setAboutMe(String aboutMe) {
-        this.aboutMe = aboutMe;
-    }
+	public void setState(String state) {
+		this.state = state;
+	}
 
-    @Override
-    public String toString() {
-        return "Account [aboutMe=" + aboutMe + ", country=" + country + ", id=" + id
-                + ", state=" + state + ", status=" + status + "]";
-    }
+	public String getBio() {
+		return bio;
+	}
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((aboutMe == null) ? 0 : aboutMe.hashCode());
-        result = prime * result + ((country == null) ? 0 : country.hashCode());
-        result = prime * result + id;
-        result = prime * result + ((state == null) ? 0 : state.hashCode());
-        result = prime * result + ((status == null) ? 0 : status.hashCode());
-        return result;
-    }
+	public void setBio(String bio) {
+		this.bio = bio;
+	}
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Account other = (Account) obj;
-        if (aboutMe == null) {
-            if (other.aboutMe != null)
-                return false;
-        } else if (!aboutMe.equals(other.aboutMe))
-            return false;
-        if (country == null) {
-            if (other.country != null)
-                return false;
-        } else if (!country.equals(other.country))
-            return false;
-        if (id != other.id)
-            return false;
-        if (state == null) {
-            if (other.state != null)
-                return false;
-        } else if (!state.equals(other.state))
-            return false;
-        if (status == null) {
-            if (other.status != null)
-                return false;
-        } else if (!status.equals(other.status))
-            return false;
-        return true;
-    }
+//	public List<User> getFriendsList() {
+//		return friendsList;
+//	}
+
+//	public void setFriendsList(List<User> friendsList) {
+//		this.friendsList = friendsList;
+//	}
+
+//	public List<Channel> getSubscriptions() {
+//		return subscriptions;
+//	}
+
+//	public void setSubscriptions(List<Channel> subscriptions) {
+//		this.subscriptions = subscriptions;
+//	}
+
+
 
     
 }
