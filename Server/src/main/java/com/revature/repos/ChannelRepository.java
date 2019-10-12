@@ -1,6 +1,6 @@
 package com.revature.repos;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.hibernate.SessionFactory;
@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.revature.models.Channel;
 import com.revature.models.Message;
+import com.revature.models.Role;
 import com.revature.models.User;
 
 public class ChannelRepository {
@@ -21,8 +22,8 @@ public class ChannelRepository {
 	
 	/**
 	 * Returns all channels owned by a logged in user.
-	 * @param currentUser
-	 * @return
+	 * @param currentUser - The current user who's logged in.
+	 * @return List<Channel> - A list of all channels belonging to a specific user.
 	 */
 	
 	public List<Channel> getAll(User currentUser) {
@@ -34,8 +35,8 @@ public class ChannelRepository {
 	
 	/**
 	 * Locates a channel given its ID.
-	 * @param id
-	 * @return
+	 * @param id - The id of a channel to get.
+	 * @return Channel - The channel that was fetched.
 	 */
 	
 	public Channel getById(int id) {
@@ -47,38 +48,46 @@ public class ChannelRepository {
 	
 	/**
 	 * Gets all members in a channel
-	 * @param owner
-	 * @return
+	 * @return List<User> - A list of users belonging 
 	 */
 	
-	public List<Channel> getAllMembers(User owner) {
-		String query = "from channel_users";
-		return factory.getCurrentSession().createQuery(query, Channel.class).getResultList();
+	public List<User> getAllMembers(Channel chan) {
+		String query = "from channel_users where channel_id = :id";
+		
+		return factory.getCurrentSession().createQuery(query, User.class)
+				.setParameter("channel_id", chan.getId())
+				.getResultList();
 	}
 	
 	/**
 	 * Adds a new user to a given channel
-	 * @param newUser
-	 * @param chan
+	 * @param newUser - The user to be added.
+	 * @param chan - The channel to add the new user to.
 	 */
 	
 	public void addMember(User newUser, Channel chan) {
-		List<User> memberList = chan.getMembers();
-		memberList.add(newUser);
-		chan.setMembers(memberList);
+		HashMap<User, Role> memberList = chan.getMembers();
+		if(memberList.size() < 1) {
+			memberList.put(newUser, Role.OWNER);
+			chan.setMembers(memberList);
+		}
+		else {
+			memberList.put(newUser, Role.USER);
+			chan.setMembers(memberList);
+		}
 	}
 	
 	/**
 	 * Remove a user from a channel
-	 * @param newUser
-	 * @param chan
+	 * @param newUser - User to remove from channel.
+	 * @param chan - Channel the user will be removed from.
 	 */
 	
-	public void deleteMember(User newUser, Channel chan) {
-		ArrayList<User> memberList = (ArrayList<User>) chan.getMembers();
+	public void deleteMember(User delUser, Role role, Channel chan) {
+		HashMap<User, Role> memberList = chan.getMembers();
 		for(int i = 0; i < memberList.size(); i++) {
-			if(memberList.get(i).getUsername() == newUser.getUsername()) {
-				memberList.remove(i);
+			if(memberList.containsKey(delUser)) {
+				memberList.remove(delUser);
 				break;
 			}
 		}
@@ -87,19 +96,19 @@ public class ChannelRepository {
 	
 	/**
 	 * Get all messages
-	 * @param chan
-	 * @return
+	 * @param chan - Channel to get messages from.
+	 * @return List<Messages> - List of messages to return.
 	 */
 	
 	public List<Message> getMessages(Channel chan) {
-		String query = "from channels";
+		String query = "select message_id from channels";
 		return factory.getCurrentSession().createQuery(query, Message.class).getResultList();
 	}
 	
 	/**
 	 * Adds a new message.
-	 * @param msg
-	 * @param chan
+	 * @param msg - message to add
+	 * @param chan - Channel to add the message to
 	 */
 	
 	public void addMessage(Message msg, Channel chan) {
@@ -111,7 +120,7 @@ public class ChannelRepository {
 	/**
 	 * Determine if the channel is open
 	 * @param chan
-	 * @return
+	 * @return boolean - Is the channel open or not?
 	 */
 	
 	public boolean getOpen(Channel chan) {
@@ -124,11 +133,10 @@ public class ChannelRepository {
 	
 	/**
 	 * Toggle open for a channel
-	 * @param chan
-	 * @param bool
+	 * @param chan - Channel to be modified.
 	 */
 	
-	public void updateOpen(Channel chan, boolean bool) {
+	public void updateOpen(Channel chan) {
 		chan.setOpen();
 	}
 }
