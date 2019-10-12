@@ -1,5 +1,6 @@
 package com.revature.models;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -30,7 +31,7 @@ public class Channel {
 
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(name = "CHANNEL_USERS", joinColumns = @JoinColumn(referencedColumnName = "channel_id"), inverseJoinColumns = @JoinColumn(referencedColumnName = "user_id"))
-    private List<User> members; // List of Users that are subscribed in this Channel
+    private HashMap<User, Role> members; // List of Users that are subscribed in this Channel
 
     @OneToMany
     @JoinColumn(name = "message_id")
@@ -53,12 +54,12 @@ public class Channel {
         super();
     }
 
-    public Channel(List<User> members, boolean open) {
+    public Channel(HashMap<User, Role> members, boolean open) {
         this.members = members;
         this.open = open;
     }
 
-    public Channel(int id, List<User> members, List<Message> messages, boolean open) {
+    public Channel(int id, HashMap<User, Role> members, List<Message> messages, boolean open) {
         this.id = id;
         this.members = members;
         this.messages = messages;
@@ -73,11 +74,11 @@ public class Channel {
         this.id = id;
     }
 
-    public List<User> getMembers() {
+    public HashMap<User, Role> getMembers() {
         return members;
     }
 
-    public void setMembers(List<User> members) {
+    public void setMembers(HashMap<User, Role> members) {
         this.members = members;
     }
 
