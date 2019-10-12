@@ -108,6 +108,8 @@ public class AppConfig implements WebMvcConfigurer, WebApplicationInitializer {
 	private Properties hibernateProperties() {
 		Properties props = new Properties();
 //		props.setProperty("hibernate.dialect", "org.hibernate.dialect.Oracle10gDialect");
+//		props.setProperty("h2.console.enableed", "true");
+//		props.setProperty("h2.console.path", "/h2-console");
 		props.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
         props.setProperty("hibernate.show_sql", "true");
         props.setProperty("hibernate.format_sql", "true");
