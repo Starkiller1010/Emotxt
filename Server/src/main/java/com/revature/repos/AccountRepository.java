@@ -36,10 +36,12 @@ public class AccountRepository {
 		Session session = factory.getCurrentSession();
 		Account persistentAccount = session.get(Account.class, updatedAccount.getId());
 		if(persistentAccount == null) return false;
-		persistentAccount.setAboutMe(updatedAccount.getAboutMe());
+		persistentAccount.setBio(updatedAccount.getBio());
 		persistentAccount.setCountry(updatedAccount.getCountry());
 		persistentAccount.setState(updatedAccount.getState());
-		persistentAccount.setstatus(updatedAccount.getstatus());
+		//persistentAccount.setFriendsList(updatedAccount.getFriendsList());
+		//persistentAccount.setSubscriptions(updatedAccount.getSubscriptions());
+	
 		return true;
 	}
 

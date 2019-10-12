@@ -49,15 +49,6 @@ public class User {
     @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
     private List<Message> userMessages;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-        name = "FRIENDS",
-        joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
-        inverseJoinColumns =  @JoinColumn(name = "friend_id", referencedColumnName = "user_id")
-    )
-    private List<User> friendsList;
-
-
     public int getId() {
         return id;
     }
