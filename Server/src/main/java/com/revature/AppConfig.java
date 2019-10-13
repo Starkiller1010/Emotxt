@@ -14,7 +14,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -26,7 +28,9 @@ import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.socket.config.annotation.AbstractWebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
+import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 
@@ -36,7 +40,9 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 @EnableTransactionManagement // Enable Spring's transaction management
 @PropertySource("classpath:app.properties") // Specify properties file
 @EnableWebSocket
-public class AppConfig implements WebMvcConfigurer, WebApplicationInitializer, WebSocketConfigurer {
+
+@Import({ WebSocketConfig.class })
+public class AppConfig implements WebMvcConfigurer, WebApplicationInitializer {
 
 	private Logger log = LogManager.getLogger(AppConfig.class);
 	// Interpolate database information and credentials from the properties file.
@@ -57,7 +63,7 @@ public class AppConfig implements WebMvcConfigurer, WebApplicationInitializer, W
 	@Value("${db.passwordH2}")
 	private String password;
 
-	private MyWebSocketHandler myWebSocketHandler;
+	//private MyWebSocketHandler myWebSocketHandler;
 
 	// @Autowired
 	// public AppConfig(MyWebSocketHandler socketHandler) {
@@ -149,23 +155,16 @@ public class AppConfig implements WebMvcConfigurer, WebApplicationInitializer, W
 		log.info("Mapping successful.");
 	}
 	
-	@Override
-   public void configureViewResolvers(ViewResolverRegistry registry) {
-	  registry.jsp("/WEB-INF/views/", ".jsp");
-   }
+	// @Override
+    // public void registerStompEndpoints(StompEndpointRegistry registry) {
+    //     registry.addEndpoint("/ws")
+    //     .setAllowedOrigins("*")
+    //     .withSockJS();
+    // }
 
-	@Override
-	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-		registry.addHandler(myWebSocketHandler, "/socketHandler");
-	}
-
-	public MyWebSocketHandler getMyWebSocketHandler() {
-		return myWebSocketHandler;
-	}
-
-	@Autowired
-	public void setMyWebSocketHandler(MyWebSocketHandler myWebSocketHandler) {
-		this.myWebSocketHandler = myWebSocketHandler;
-	}
-
+    // @Override
+    // public void configureMessageBroker(MessageBrokerRegistry registry) {
+    //     registry.enableSimpleBroker("/topic");
+    //     registry.setApplicationDestinationPrefixes("/app");
+    // }
 }
