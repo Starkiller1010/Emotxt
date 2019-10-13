@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -28,24 +29,25 @@ public class Channel {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id; // Identification number that is unique
 
-    @ManyToMany(cascade = CascadeType.REMOVE)
-    @JoinTable(name = "CHANNEL_USERS", joinColumns = @JoinColumn(referencedColumnName = "channel_id"), inverseJoinColumns = @JoinColumn(referencedColumnName = "user_id"))
-    private List<User> members; // List of Users that are subscribed in this Channel
+//    @ManyToMany(cascade = CascadeType.REMOVE)
+//    @JoinTable(name = "CHANNEL_USERS", joinColumns = @JoinColumn(referencedColumnName = "channel_id"), inverseJoinColumns = @JoinColumn(referencedColumnName = "user_id"))
+//    private List<User> members; // List of Users that are subscribed in this Channel
 
     @OneToMany
     @JoinColumn(name = "message_id")
     private List<Message> messages; // List of messages that have been made in this Channel
     
-    /*
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-        name = "USER_ROLES",
-        joinColumns = @JoinColumn(referencedColumnName = "role_id"),
-        inverseJoinColumns = @JoinColumn(referencedColumnName = "user_id")
-    )
-    // private List<Role> assignedRoles;
-	*/
-    
+    @ManyToMany(mappedBy = "subscriptions", fetch=FetchType.LAZY)
+    private List<Account> accounts;
+
+//    @ManyToMany(cascade = CascadeType.ALL)
+//    @JoinTable(
+//        name = "USER_ROLES",
+//        joinColumns = @JoinColumn(referencedColumnName = "role_id"),
+//        inverseJoinColumns = @JoinColumn(referencedColumnName = "user_id")
+//    )
+//     private List<Role> assignedRoles;
+
     @Column
     private boolean open = true; // Boolean to check if the channel is public or private
 
@@ -54,13 +56,13 @@ public class Channel {
     }
 
     public Channel(List<User> members, boolean open) {
-        this.members = members;
+        //this.members = members;
         this.open = open;
     }
 
     public Channel(int id, List<User> members, List<Message> messages, boolean open) {
         this.id = id;
-        this.members = members;
+        //this.members = members;
         this.messages = messages;
         this.open = open;
     }
@@ -73,13 +75,13 @@ public class Channel {
         this.id = id;
     }
 
-    public List<User> getMembers() {
-        return members;
-    }
-
-    public void setMembers(List<User> members) {
-        this.members = members;
-    }
+//    public List<User> getMembers() {
+//        return members;
+//    }
+//
+//    public void setMembers(List<User> members) {
+//        this.members = members;
+//    }
 
     public List<Message> getMessages() {
         return messages;
@@ -102,7 +104,7 @@ public class Channel {
         final int prime = 31;
         int result = 1;
         result = prime * result + id;
-        result = prime * result + ((members == null) ? 0 : members.hashCode());
+        //result = prime * result + ((members == null) ? 0 : members.hashCode());
         result = prime * result + ((messages == null) ? 0 : messages.hashCode());
         result = prime * result + (open ? 1231 : 1237);
         return result;
@@ -119,11 +121,11 @@ public class Channel {
         Channel other = (Channel) obj;
         if (id != other.id)
             return false;
-        if (members == null) {
-            if (other.members != null)
-                return false;
-        } else if (!members.equals(other.members))
-            return false;
+//        if (members == null) {
+//            if (other.members != null)
+//                return false;
+//        } else if (!members.equals(other.members))
+//            return false;
         if (messages == null) {
             if (other.messages != null)
                 return false;
@@ -134,9 +136,9 @@ public class Channel {
         return true;
     }
 
-    @Override
-    public String toString() {
-        return "Channel [id=" + id + ", members=" + members + ", open=" + open + "]";
-    }
+//    @Override
+//    public String toString() {
+//        return "Channel [id=" + id + ", members=" + members + ", open=" + open + "]";
+//    }
 
 }
