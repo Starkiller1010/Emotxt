@@ -35,7 +35,8 @@ public class Channel {
     @OneToMany
     @JoinColumn(name = "message_id")
     private List<Message> messages; // List of messages that have been made in this Channel
-
+    
+    /*
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
         name = "USER_ROLES",
@@ -43,7 +44,8 @@ public class Channel {
         inverseJoinColumns = @JoinColumn(referencedColumnName = "user_id")
     )
     // private List<Role> assignedRoles;
-
+	*/
+    
     @Column
     private boolean open = true; // Boolean to check if the channel is public or private
 
@@ -91,8 +93,8 @@ public class Channel {
         return open;
     }
 
-    public void setOpen(boolean open) {
-        this.open = open;
+    public void setOpen() {
+        this.open = !this.open;
     }
 
     @Override
