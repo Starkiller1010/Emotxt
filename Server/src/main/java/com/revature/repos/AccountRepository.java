@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.revature.models.Account;
+import com.revature.models.User;
 
 @Repository
 public class AccountRepository {
@@ -21,15 +22,23 @@ public class AccountRepository {
 	}
 
 	public List<Account> getAll() {
-		return factory.getCurrentSession().createQuery("from Account", Account.class).getResultList();
+		List accounts = factory.getCurrentSession().createQuery("from Account", Account.class).getResultList();
+		System.out.println(accounts);
+		return accounts;
 	}
 
 	public Account getById(int id) {
 		return factory.getCurrentSession().get(Account.class, id);
 	}
+	
+	public List<User> getAccountFriends(int accountId) {
+		
+	}
 
 	public Account save(Account newAccount) {
-		return (Account) factory.getCurrentSession().save(newAccount);
+		System.out.println("In repos: " + newAccount.getId());
+		factory.getCurrentSession().save(newAccount);
+		return newAccount;
 	}
 
 	public boolean update(Account updatedAccount) {
@@ -39,8 +48,8 @@ public class AccountRepository {
 		persistentAccount.setBio(updatedAccount.getBio());
 		persistentAccount.setCountry(updatedAccount.getCountry());
 		persistentAccount.setState(updatedAccount.getState());
-		//persistentAccount.setFriendsList(updatedAccount.getFriendsList());
-		//persistentAccount.setSubscriptions(updatedAccount.getSubscriptions());
+		persistentAccount.setFriendsList(updatedAccount.getFriendsList());
+		persistentAccount.setSubscriptions(updatedAccount.getSubscriptions());
 	
 		return true;
 	}
