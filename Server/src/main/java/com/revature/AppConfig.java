@@ -36,20 +36,20 @@ public class AppConfig implements WebMvcConfigurer, WebApplicationInitializer {
 	private Logger log = LogManager.getLogger(AppConfig.class);
 	// Interpolate database information and credentials from the properties file.
 	
-//	@Value("${db.driverOracle}")
-	@Value("${db.driverH2}")
+	@Value("${db.driverOracle}")
+//	@Value("${db.driverH2}")
 	private String driver;
 	
-//	@Value("${db.urlOracle}")
-	@Value("${db.urlH2}")
+	@Value("${db.urlOracle}")
+//	@Value("${db.urlH2}")
 	private String url;
 	
-//	@Value("${db.usernameOracle}")
-	@Value("${db.usernameH2}")
+	@Value("${db.usernameOracle}")
+//	@Value("${db.usernameH2}")
 	private String username;
 	
-//	@Value("${db.passwordOracle}")
-	@Value("${db.passwordH2}")
+	@Value("${db.passwordOracle}")
+//	@Value("${db.passwordH2}")
 	private String password;
 	
 	/**
@@ -107,10 +107,10 @@ public class AppConfig implements WebMvcConfigurer, WebApplicationInitializer {
 	
 	private Properties hibernateProperties() {
 		Properties props = new Properties();
-//		props.setProperty("hibernate.dialect", "org.hibernate.dialect.Oracle10gDialect");
-//		props.setProperty("h2.console.enableed", "true");
+		props.setProperty("hibernate.dialect", "org.hibernate.dialect.Oracle10gDialect");
+//		props.setProperty("h2.console.enabled", "true");
 //		props.setProperty("h2.console.path", "/h2-console");
-		props.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
+//		props.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
         props.setProperty("hibernate.show_sql", "true");
         props.setProperty("hibernate.format_sql", "true");
         props.setProperty("hibernate.hbm2ddl.auto", "create-drop");
