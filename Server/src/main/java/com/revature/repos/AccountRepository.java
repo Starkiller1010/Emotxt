@@ -3,12 +3,15 @@ package com.revature.repos;
 import java.lang.annotation.Annotation;
 import java.util.List;
 
+import javax.persistence.Query;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.revature.models.Account;
+import com.revature.models.Channel;
 import com.revature.models.User;
 
 @Repository
@@ -23,7 +26,6 @@ public class AccountRepository {
 
 	public List<Account> getAll() {
 		List accounts = factory.getCurrentSession().createQuery("from Account", Account.class).getResultList();
-		System.out.println(accounts);
 		return accounts;
 	}
 
@@ -32,6 +34,20 @@ public class AccountRepository {
 	}
 	
 	public List<User> getAccountFriends(int accountId) {
+		Session session = factory.getCurrentSession();
+		Query query = session.createQuery("SELECT A.friends FROM Account A WHERE A.account_id = :id");
+		query.setParameter(1, accountId);
+		List<User> friends = query.getResultList();
+		return friends;
+		
+	}
+	
+	public List<Channel> getAccountChannels(int accountId) {
+		Session session = factory.getCurrentSession();
+		Query query = session.createQuery("SELECT A.channels FROM Account A WHERE A.account_id = :id");
+		query.setParameter(1, accountId);
+		List<Channel> channels = query.getResultList();
+		return channels;
 		
 	}
 
