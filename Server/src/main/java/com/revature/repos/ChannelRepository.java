@@ -5,12 +5,14 @@ import java.util.List;
 
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.revature.models.Channel;
 import com.revature.models.Message;
 import com.revature.models.Role;
 import com.revature.models.User;
 
+@Repository
 public class ChannelRepository {
 	
 	private SessionFactory factory;
@@ -65,16 +67,22 @@ public class ChannelRepository {
 	 * @param chan - The channel to add the new user to.
 	 */
 	
+//	public void addMember(User newUser, Channel chan) {
+//		HashMap<User, Role> memberList = chan.getMembers();
+//		if(memberList.size() < 1) {
+//			memberList.put(newUser, Role.OWNER);
+//			chan.setMembers(memberList);
+//		}
+//		else {
+//			memberList.put(newUser, Role.USER);
+//			chan.setMembers(memberList);
+//		}
+//	}
+	
 	public void addMember(User newUser, Channel chan) {
-		HashMap<User, Role> memberList = chan.getMembers();
-		if(memberList.size() < 1) {
-			memberList.put(newUser, Role.OWNER);
-			chan.setMembers(memberList);
-		}
-		else {
-			memberList.put(newUser, Role.USER);
-			chan.setMembers(memberList);
-		}
+		List<User> memberList = chan.getMembers();
+		memberList.add(newUser);
+		chan.setMembers(memberList);
 	}
 	
 	/**
@@ -83,11 +91,22 @@ public class ChannelRepository {
 	 * @param chan - Channel the user will be removed from.
 	 */
 	
+//	public void deleteMember(User delUser, Role role, Channel chan) {
+//		HashMap<User, Role> memberList = chan.getMembers();
+//		for(int i = 0; i < memberList.size(); i++) {
+//			if(memberList.containsKey(delUser)) {
+//				memberList.remove(delUser);
+//				break;
+//			}
+//		}
+//		chan.setMembers(memberList);
+//	}
+	
 	public void deleteMember(User delUser, Role role, Channel chan) {
-		HashMap<User, Role> memberList = chan.getMembers();
+		List<User> memberList = chan.getMembers();
 		for(int i = 0; i < memberList.size(); i++) {
-			if(memberList.containsKey(delUser)) {
-				memberList.remove(delUser);
+			if(memberList.contains(delUser)) {
+				memberList.remove(i);
 				break;
 			}
 		}
