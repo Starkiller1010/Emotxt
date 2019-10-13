@@ -123,6 +123,20 @@
 			<version>${spring.version}</version>
 		</dependency>
 
+		<!-- WebSocket Dependencies -->
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-websocket</artifactId>
+			<version>4.2.4.RELEASE</version>
+		</dependency>
+		 
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-messaging</artifactId>
+			<version>4.2.4.RELEASE</version>
+		</dependency>
+
 		<!-- Appache Commons Connection Pool -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
