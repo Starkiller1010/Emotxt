@@ -4,7 +4,7 @@ import { AppComponent } from '../../app.component';
 
 export class WebSocketAPI {
 
-  webSocketEndPoint = 'http://localhost:8080/ws';
+  webSocketEndPoint = 'http://localhost:8080/Emotxt/socket';
   // webSocketEndPoint = 'ws://localhost:8080/ws';
   topic = '/topic/greetings';
   // topic = 'http://localhost:8080/topic/greetings';

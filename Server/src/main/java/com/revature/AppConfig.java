@@ -2,37 +2,22 @@ package com.revature;
 
 import java.util.Properties;
 
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRegistration;
-
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.web.WebApplicationInitializer;
-import org.springframework.web.context.ContextLoaderListener;
-import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
-import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.socket.config.annotation.AbstractWebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
-import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
-import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
-import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 
 @EnableWebMvc
 @ComponentScan // Enable Component scanning
@@ -40,9 +25,8 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 @EnableTransactionManagement // Enable Spring's transaction management
 @PropertySource("classpath:app.properties") // Specify properties file
 @EnableWebSocket
-
 @Import({ WebSocketConfig.class })
-public class AppConfig implements WebMvcConfigurer, WebApplicationInitializer {
+public class AppConfig implements WebMvcConfigurer {
 
 	private Logger log = LogManager.getLogger(AppConfig.class);
 	// Interpolate database information and credentials from the properties file.
@@ -142,18 +126,18 @@ public class AppConfig implements WebMvcConfigurer, WebApplicationInitializer {
 	 * instantiation of dispatcher to eager - Adds a mapping to the servlet.
 	 */
 
-	@Override
-	public void onStartup(ServletContext servletContext) throws ServletException {
-		AnnotationConfigWebApplicationContext container = new AnnotationConfigWebApplicationContext();
-		container.register(AppConfig.class);
-		servletContext.addListener(new ContextLoaderListener(container));
-		log.info("Setting up dispatcher.");
-		ServletRegistration.Dynamic dispatcher = servletContext.addServlet("DispatcherServlet",
-				new DispatcherServlet(container));
-		dispatcher.setLoadOnStartup(1);
-		dispatcher.addMapping("/");
-		log.info("Mapping successful.");
-	}
+	// @Override
+	// public void onStartup(ServletContext servletContext) throws ServletException {
+	// 	AnnotationConfigWebApplicationContext container = new AnnotationConfigWebApplicationContext();
+	// 	container.register(AppConfig.class);
+	// 	servletContext.addListener(new ContextLoaderListener(container));
+	// 	log.info("Setting up dispatcher.");
+	// 	ServletRegistration.Dynamic dispatcher = servletContext.addServlet("DispatcherServlet",
+	// 			new DispatcherServlet(container));
+	// 	dispatcher.setLoadOnStartup(1);
+	// 	dispatcher.addMapping("/");
+	// 	log.info("Mapping successful.");
+	// }
 	
 	// @Override
     // public void registerStompEndpoints(StompEndpointRegistry registry) {

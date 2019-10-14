@@ -8,6 +8,9 @@
 	<packaging>war</packaging>
 	<name>Emotxt</name>
 	<description>Emotionally text-to-speech messenger</description>
+	<build>
+		<finalName>${artifactId}</finalName>
+	</build>
 
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
