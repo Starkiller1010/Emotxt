@@ -28,12 +28,12 @@ public class WebSocketController {
    }
 
    @MessageMapping("/hello")
-   @SendTo("/topic/greetings")
-   public Greeting onReceivedMessage(HelloMessage message) throws Exception {
+   public void onReceivedMessage(HelloMessage message) throws Exception {
      // this.template.convertAndSend("/chat", new SimpleDateFormat("HH:mm:ss").format(new Date()) +"- "+message.getBody());
    //   return message;
       System.out.println("Endpoint hit");
-      return new Greeting("Hello, " + HtmlUtils.htmlEscape(message.getName()) + "!");
+      //return new Greeting("Hello!");
+      template.convertAndSend("/topic/greetings", "payload");
    }
 
 }
