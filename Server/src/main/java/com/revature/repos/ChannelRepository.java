@@ -1,7 +1,8 @@
 package com.revature.repos;
 
-import java.util.HashMap;
 import java.util.List;
+
+import javax.persistence.NoResultException;
 
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,10 +30,17 @@ public class ChannelRepository {
 	 */
 	
 	public List<Channel> getAll(User currentUser) {
+		
 		String query = "from channel_users u where u.user_id = :current_user";
-		return factory.getCurrentSession().createQuery(query, Channel.class)
-				.setParameter("current_user", currentUser.getId())
-				.getResultList();
+		try {
+			return factory.getCurrentSession().createQuery(query, Channel.class)
+					.setParameter("current_user", currentUser.getId())
+					.getResultList();
+		}
+		catch(NoResultException e) {
+			return null;
+		}
+		
 	}
 	
 	/**
@@ -42,10 +50,16 @@ public class ChannelRepository {
 	 */
 	
 	public Channel getById(int id) {
+		
 		String query = "from channels where channel_id = :id";
-		return factory.getCurrentSession().createQuery(query, Channel.class)
-				.setParameter("id", id)
-				.getSingleResult();
+		try {
+			return factory.getCurrentSession().createQuery(query, Channel.class)
+					.setParameter("id", id)
+					.getSingleResult();
+		}
+		catch(NoResultException e) {
+			return null;
+		}
 	}
 	
 	/**
@@ -54,11 +68,17 @@ public class ChannelRepository {
 	 */
 	
 	public List<User> getAllMembers(Channel chan) {
+		
 		String query = "from channel_users where channel_id = :id";
 		
-		return factory.getCurrentSession().createQuery(query, User.class)
-				.setParameter("channel_id", chan.getId())
-				.getResultList();
+		try {
+			return factory.getCurrentSession().createQuery(query, User.class)
+					.setParameter("channel_id", chan.getId())
+					.getResultList();
+		}
+		catch(NoResultException e) {
+			return null;
+		}
 	}
 	
 	/**
@@ -102,13 +122,10 @@ public class ChannelRepository {
 //		chan.setMembers(memberList);
 //	}
 	
-	public void deleteMember(User delUser, Role role, Channel chan) {
+	public void removeMember(User delUser, Channel chan) {
 		List<User> memberList = chan.getMembers();
-		for(int i = 0; i < memberList.size(); i++) {
-			if(memberList.contains(delUser)) {
-				memberList.remove(i);
-				break;
-			}
+		if(memberList.contains(delUser)) {
+			memberList.remove(delUser);
 		}
 		chan.setMembers(memberList);
 	}
@@ -143,11 +160,17 @@ public class ChannelRepository {
 	 */
 	
 	public boolean getOpen(Channel chan) {
+		
 		String query = "select open from channels where channel_id = :id";
-		return factory.getCurrentSession().createQuery(query, Channel.class)
-				.setParameter("id", chan.getId())
-				.getSingleResult()
-				.isOpen();
+		try {
+			return factory.getCurrentSession().createQuery(query, Channel.class)
+					.setParameter("id", chan.getId())
+					.getSingleResult()
+					.isOpen();
+		}
+		catch(NoResultException e) {
+			return false;		// If a channel does not exist, it should be private.
+		}
 	}
 	
 	/**
