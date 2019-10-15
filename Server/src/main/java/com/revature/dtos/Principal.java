@@ -5,7 +5,15 @@ public class Principal {
 	private int id;
 	private String username;
 	private String role;
+	private String status;
+	
 	public Principal(int id, String username, String role) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.role = role;
+	}
+	public Principal(int id, String username, String role, String status) {
 		super();
 		this.id = id;
 		this.username = username;
