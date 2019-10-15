@@ -40,11 +40,9 @@ public class User {
     private String email;
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(referencedColumnName = "account_id")
+    @JoinColumn(name="account_id", referencedColumnName = "account_id")
     private Account account;
 
-    @ManyToMany(mappedBy = "members", fetch = FetchType.LAZY)
-    private List<Channel> channels;
 
     @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
     private List<Message> userMessages;
@@ -87,14 +85,6 @@ public class User {
 
     public void setAccount(Account account) {
         this.account = account;
-    }
-
-    public List<Channel> getChannels() {
-        return channels;
-    }
-
-    public void setChannels(List<Channel> channels) {
-        this.channels = channels;
     }
 
     public List<Message> getUserMessages() {
