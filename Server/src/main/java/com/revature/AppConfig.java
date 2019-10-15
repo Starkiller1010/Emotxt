@@ -24,8 +24,6 @@ import org.springframework.web.socket.config.annotation.EnableWebSocket;
 @Configuration // XML equivalent to <bean>
 @EnableTransactionManagement // Enable Spring's transaction management
 @PropertySource("classpath:app.properties") // Specify properties file
-@EnableWebSocket
-@Import({ WebSocketConfig.class })
 public class AppConfig implements WebMvcConfigurer {
 
 	private Logger log = LogManager.getLogger(AppConfig.class);
