@@ -1,5 +1,6 @@
 package com.revature.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -43,12 +44,11 @@ public class User {
 //    @ManyToMany(mappedBy = "friendsList", fetch=FetchType.LAZY)
 //    private List<Account> friendsList;
 
-//    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-//    @JoinColumn(referencedColumnName = "account_id")
-//    private Account account;
+//	  @OneToOne(mappedBy="user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//	  private Account account;
     
 //    @ManyToMany(mappedBy = "friendsList", fetch=FetchType.LAZY)
-//    private List<Account> friends;
+//    private List<Account> friends = new ArrayList<>();
 
 //    @ManyToMany(mappedBy = "members", fetch = FetchType.LAZY)
 //    private List<Channel> channels;

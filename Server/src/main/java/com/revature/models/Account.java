@@ -1,5 +1,6 @@
 package com.revature.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -12,10 +13,19 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 
 /**
  * Account
@@ -39,23 +49,28 @@ public class Account {
     @Column
     private String bio;
     
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "userInfo", referencedColumnName = "user_id")
     private User user;
     
     @OneToMany
     @JoinColumn(name = "message_id")
-    private List<Message> messages; // List of messages that have been made in this Channel
+    private List<Message> messages = new ArrayList<>(); // List of messages that have been made in this Channel
     
-    @ManyToMany(cascade = CascadeType.ALL)
+    
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
-    	name = "FRIENDS_LIST",
-        joinColumns = @JoinColumn(name="user_a", referencedColumnName = "account_id"),
-        inverseJoinColumns= @JoinColumn(name="friend_id", referencedColumnName = "account_id")
+    	name = "friends_list",
+        joinColumns = {@JoinColumn(name="me", referencedColumnName = "account_id")},
+        inverseJoinColumns= {@JoinColumn(name="them", referencedColumnName = "account_id")}
         )
     private List<Account> friendsList;
     
-    @ManyToMany(cascade = CascadeType.ALL)
+   
+    @ManyToMany(mappedBy = "friendsList", fetch=FetchType.EAGER)
+    private List<Account> friends;
+    
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
         name = "SUBSCRIPTIONS",
         joinColumns = @JoinColumn(name = "account_id", referencedColumnName = "account_id"),

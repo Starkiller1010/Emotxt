@@ -27,25 +27,33 @@ public class AccountRepository {
 	public List<Account> getAll() {
 		List accounts = factory.getCurrentSession().createQuery("from Account", Account.class).getResultList();
 		return accounts;
+		
 	}
 
 	public Account getById(int id) {
-		return factory.getCurrentSession().get(Account.class, id);
+		Account account = factory.openSession().get(Account.class, id);
+		return account;
 	}
 	
+
+	
 	public List<User> getAccountFriends(int accountId) {
-		Session session = factory.getCurrentSession();
-		Query query = session.createQuery("SELECT A.friends FROM Account A WHERE A.account_id = :id");
-		query.setParameter(1, accountId);
-		List<User> friends = query.getResultList();
-		return friends;
+		String query = "select username from Friends_list "
+				+ "join accounts on Accounts.account_id = Freinds_list.me "
+				+ "join acounts on Accounts.account_id = Friends_list.them "
+				+ "join users on Users.user_id = Accounts.userInfo "
+				+ "where Accounts.account_id = :accountId";
 		
+		return factory.getCurrentSession().createQuery(query, User.class)
+			.setParameter("accountId", accountId)
+			.getResultList();
+
 	}
 	
 	public List<Channel> getAccountChannels(int accountId) {
 		Session session = factory.getCurrentSession();
-		Query query = session.createQuery("SELECT A.channels FROM Account A WHERE A.account_id = :id");
-		query.setParameter(1, accountId);
+		Query query = session.createQuery("SELECT channels FROM accounts join subscriptions  WHERE account_id = :id");
+		query.setParameter("id", accountId);
 		List<Channel> channels = query.getResultList();
 		return channels;
 		
