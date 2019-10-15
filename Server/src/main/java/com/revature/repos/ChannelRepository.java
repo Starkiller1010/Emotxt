@@ -1,6 +1,8 @@
 package com.revature.repos;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.NoResultException;
 
@@ -87,22 +89,16 @@ public class ChannelRepository {
 	 * @param chan - The channel to add the new user to.
 	 */
 	
-//	public void addMember(User newUser, Channel chan) {
-//		HashMap<User, Role> memberList = chan.getMembers();
-//		if(memberList.size() < 1) {
-//			memberList.put(newUser, Role.OWNER);
-//			chan.setMembers(memberList);
-//		}
-//		else {
-//			memberList.put(newUser, Role.USER);
-//			chan.setMembers(memberList);
-//		}
-//	}
-	
 	public void addMember(User newUser, Channel chan) {
-		List<User> memberList = chan.getMembers();
-		memberList.add(newUser);
-		chan.setMembers(memberList);
+		Map<Role, User> memberList = chan.getMembers();
+		if(memberList.size() < 1) {
+			memberList.put(Role.OWNER, newUser);
+			chan.setMembers(memberList);
+		}
+		else {
+			memberList.put(Role.USER, newUser);
+			chan.setMembers(memberList);
+		}
 	}
 	
 	/**
@@ -111,22 +107,10 @@ public class ChannelRepository {
 	 * @param chan - Channel the user will be removed from.
 	 */
 	
-//	public void deleteMember(User delUser, Role role, Channel chan) {
-//		HashMap<User, Role> memberList = chan.getMembers();
-//		for(int i = 0; i < memberList.size(); i++) {
-//			if(memberList.containsKey(delUser)) {
-//				memberList.remove(delUser);
-//				break;
-//			}
-//		}
-//		chan.setMembers(memberList);
-//	}
-	
-	public void removeMember(User delUser, Channel chan) {
-		List<User> memberList = chan.getMembers();
-		if(memberList.contains(delUser)) {
-			memberList.remove(delUser);
-		}
+	public void removeMember(User delUser, Role role, Channel chan) {
+		Map<Role, User> memberList = chan.getMembers();
+		memberList.containsValue(delUser);
+		memberList.remove(role, delUser);
 		chan.setMembers(memberList);
 	}
 	

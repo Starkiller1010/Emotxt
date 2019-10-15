@@ -2,9 +2,11 @@ package com.revature.models;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.GeneratedValue;
@@ -13,9 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.MapKey;
 import javax.persistence.MapKeyEnumerated;
-import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -34,11 +34,13 @@ public class Channel {
     private int id; // Identification number that is unique
 
     @ManyToMany(cascade = CascadeType.REMOVE)
-    @JoinTable(name = "CHANNEL_USERS", joinColumns = @JoinColumn(referencedColumnName = "channel_id"), inverseJoinColumns = @JoinColumn(referencedColumnName = "user_id"))
-    //@MapKeyJoinColumn()
+    @ElementCollection
+    @JoinTable(name = "CHANNEL_USERS", 
+    			joinColumns = @JoinColumn(referencedColumnName = "channel_id"), 
+    			inverseJoinColumns = @JoinColumn(referencedColumnName = "user_id"))
     @MapKeyEnumerated(value=EnumType.STRING)
-    //private HashMap<User, Role> members; // List of Users that are subscribed in this Channel
-    private List<User> members;
+
+    private Map <Role, User> members;
 
     @OneToMany
     @JoinColumn(name = "message_id")
@@ -50,18 +52,18 @@ public class Channel {
     public Channel() {
         super();
     }
-
-    public Channel(List<User> members, boolean open) {
-        this.members = members;
-        this.open = open;
-    }
-
-    public Channel(int id, List<User> members, List<Message> messages, boolean open) {
-        this.id = id;
-        this.members = members;
-        this.messages = messages;
-        this.open = open;
-    }
+   
+	public Channel(Map<Role, User> members, boolean open) {
+	  this.members = members;
+	  this.open = open;
+	}
+	
+	public Channel(int id, Map<Role, User> members, List<Message> messages, boolean open) {
+	  this.id = id;
+	  this.members = members;
+	  this.messages = messages;
+	  this.open = open;
+	}
 
     public int getId() {
         return id;
@@ -70,12 +72,12 @@ public class Channel {
     public void setId(int id) {
         this.id = id;
     }
-
-    public List<User> getMembers() {
+    
+    public Map<Role, User> getMembers() {
         return members;
     }
 
-    public void setMembers(List<User> members) {
+    public void setMembers(Map<Role, User> members) {
         this.members = members;
     }
 
