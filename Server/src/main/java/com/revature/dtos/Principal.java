@@ -7,6 +7,10 @@ public class Principal {
 	private String role;
 	private String status;
 	
+	public Principal() {
+		super();
+	}
+	
 	public Principal(int id, String username, String role) {
 		super();
 		this.id = id;
