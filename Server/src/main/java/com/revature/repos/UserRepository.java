@@ -106,7 +106,7 @@ public class UserRepository {
 	 * If the transaction fails it is rolled back.
 	 */
 	
-	public boolean add(User newUser) {
+	public User add(User newUser) {
 		
 		log.info("Inside add for UserRepo");
 		Session session = sessionFactory.getCurrentSession();
@@ -123,10 +123,10 @@ public class UserRepository {
 		catch(Exception e) {
 			log.info("Transaction failed! Rolling back changes now.");
 			session.getTransaction().rollback();
-			return false;
+			return null;
 		}
 		log.info("Transaction successful!");
-		return true;
+		return newUser;
 	}
 	
 	/**
@@ -138,24 +138,24 @@ public class UserRepository {
 	 * @return boolean - true on success and false on failure/rollback.
 	 */
 	
-	public boolean updateUser(User newUser) {
+	public User updateUser(User updatedUser) {
 		
 		log.info("Inside updateUser in UserRepo.");
 		Session session = sessionFactory.getCurrentSession();
 		try {
 			log.info("Beginning transaction.");
 			session.beginTransaction();
-			session.update(newUser);
+			session.update(updatedUser);
 			session.getTransaction().commit();
 		}
 		catch(Exception e)
 		{
 			log.info("Transaction failed! Rolling back changes now.");
 			session.getTransaction().rollback();
-			return false;
+			return null;
 		}
 		log.info("Transaction successful!");
-		return true;
+		return updatedUser;
 	}
 	
 	/**

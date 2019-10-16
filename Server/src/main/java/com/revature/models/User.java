@@ -27,7 +27,7 @@ public class User {
 
     @Id
     @Column(name = "user_id", nullable = false, unique = true)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
     @Column(nullable = false, unique = true)
@@ -39,10 +39,9 @@ public class User {
     @Column(nullable = false)
     private String email;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name="account_id", referencedColumnName = "account_id")
-    private Account account;
-
+//    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    @JoinColumn(name="account_id", referencedColumnName = "account_id")
+//    private Account account;
 
     @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
     private List<Message> userMessages;
@@ -79,13 +78,13 @@ public class User {
         this.email = email;
     }
 
-    public Account getAccount() {
-        return account;
-    }
-
-    public void setAccount(Account account) {
-        this.account = account;
-    }
+//    public Account getAccount() {
+//        return account;
+//    }
+//
+//    public void setAccount(Account account) {
+//        this.account = account;
+//    }
 
     public List<Message> getUserMessages() {
         return userMessages;
@@ -97,7 +96,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User [account=" + account + ", email=" + email + ", id=" + id + ", password=" + password + ", username="
+        return "User [email=" + email + ", id=" + id + ", password=" + password + ", username="
                 + username + "]";
     }
 
@@ -105,7 +104,7 @@ public class User {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((account == null) ? 0 : account.hashCode());
+        //result = prime * result + ((account == null) ? 0 : account.hashCode());
         result = prime * result + ((email == null) ? 0 : email.hashCode());
         result = prime * result + id;
         result = prime * result + ((password == null) ? 0 : password.hashCode());
@@ -123,11 +122,11 @@ public class User {
         if (getClass() != obj.getClass())
             return false;
         User other = (User) obj;
-        if (account == null) {
-            if (other.account != null)
-                return false;
-        } else if (!account.equals(other.account))
-            return false;
+//        if (account == null) {
+//            if (other.account != null)
+//                return false;
+//        } else if (!account.equals(other.account))
+//            return false;
         if (email == null) {
             if (other.email != null)
                 return false;

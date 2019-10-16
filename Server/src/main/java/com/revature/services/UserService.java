@@ -68,18 +68,18 @@ public class UserService {
 		return existingUser;
 	}
 	
-	public boolean add(User newUser) {
+	public User add(User newUser) {
 		
 		log.info("Inside of add in UserService.");
 		if(validator.validate(newUser)) {
 			log.info("User is valid");
 			return userRepo.add(newUser);
 		}
-		return false;
+		return null;
 	}
 	
 	@Transactional(isolation=Isolation.REPEATABLE_READ)
-	public boolean update(User existingUser) {
+	public User update(User existingUser) {
 		log.info("Inside of add in UserService.");
 		return userRepo.updateUser(existingUser);
 	}
