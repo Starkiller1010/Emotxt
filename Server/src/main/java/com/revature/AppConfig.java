@@ -29,20 +29,20 @@ public class AppConfig implements WebMvcConfigurer {
 	private Logger log = LogManager.getLogger(AppConfig.class);
 	// Interpolate database information and credentials from the properties file.
 	
-//	@Value("${db.driverOracle}")
-	@Value("${db.driverH2}")
+	@Value("${db.driverOracle}")
+//	@Value("${db.driverH2}")
 	private String driver;
 	
-//	@Value("${db.urlOracle}")
-	@Value("${db.urlH2}")
+	@Value("${db.urlOracle}")
+//	@Value("${db.urlH2}")
 	private String url;
 	
-//	@Value("${db.usernameOracle}")
-	@Value("${db.usernameH2}")
+	@Value("${db.usernameOracle}")
+//	@Value("${db.usernameH2}")
 	private String username;
 	
-//	@Value("${db.passwordOracle}")
-	@Value("${db.passwordH2}")
+	@Value("${db.passwordOracle}")
+//	@Value("${db.passwordH2}")
 	private String password;
 
 	//private MyWebSocketHandler myWebSocketHandler;

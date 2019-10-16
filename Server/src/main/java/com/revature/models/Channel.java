@@ -1,16 +1,21 @@
 package com.revature.models;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.MapKey;
+import javax.persistence.MapKeyEnumerated;
+import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -30,21 +35,14 @@ public class Channel {
 
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(name = "CHANNEL_USERS", joinColumns = @JoinColumn(referencedColumnName = "channel_id"), inverseJoinColumns = @JoinColumn(referencedColumnName = "user_id"))
-    private List<User> members; // List of Users that are subscribed in this Channel
+    //@MapKeyJoinColumn()
+    @MapKeyEnumerated(value=EnumType.STRING)
+    //private HashMap<User, Role> members; // List of Users that are subscribed in this Channel
+    private List<User> members;
 
     @OneToMany
     @JoinColumn(name = "message_id")
     private List<Message> messages; // List of messages that have been made in this Channel
-    
-    /*
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-        name = "USER_ROLES",
-        joinColumns = @JoinColumn(referencedColumnName = "role_id"),
-        inverseJoinColumns = @JoinColumn(referencedColumnName = "user_id")
-    )
-    // private List<Role> assignedRoles;
-	*/
     
     @Column
     private boolean open = true; // Boolean to check if the channel is public or private

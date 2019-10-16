@@ -39,7 +39,7 @@ public class AccountRepository {
 		persistentAccount.setAboutMe(updatedAccount.getAboutMe());
 		persistentAccount.setCountry(updatedAccount.getCountry());
 		persistentAccount.setState(updatedAccount.getState());
-		persistentAccount.setstatus(updatedAccount.getstatus());
+		persistentAccount.setStatus(updatedAccount.getStatus());
 		return true;
 	}
 
