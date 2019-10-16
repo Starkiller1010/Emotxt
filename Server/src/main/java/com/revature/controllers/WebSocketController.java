@@ -1,4 +1,4 @@
-package com.revature;
+package com.revature.controllers;
 
 import com.revature.models.Greeting;
 import com.revature.models.HelloMessage;
@@ -21,12 +21,11 @@ public class WebSocketController {
    }
 
    @MessageMapping("/hello")
-   public void onReceivedMessage(HelloMessage message) throws Exception {
-     // this.template.convertAndSend("/chat", new SimpleDateFormat("HH:mm:ss").format(new Date()) +"- "+message.getBody());
-   //   return message;
-      System.out.println("Endpoint hit");
-      //return new Greeting("Hello!");
-      template.convertAndSend("/topic/greetings", "payload");
+  // @SendTo("/topic/greetings")
+   public void onReceivedMessage(String message) throws Exception {
+      System.out.println("Endpoint hit" + message);
+      // template.convertAndSend("/topic/greetings", "Got Message");
+     // return "Got Message";
    }
-
+ 
 }
