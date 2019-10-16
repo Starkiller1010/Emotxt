@@ -62,9 +62,10 @@ public class AuthFilter extends OncePerRequestFilter {
 	 */
 	public void attachCorsResponseHeaders(HttpServletResponse resp) throws IOException, ServletException {
 		log.info("Attaching CORS headers to HTTP response");
-		resp.setHeader("Access-Control-Allow-Origin", "*");
+		resp.setHeader("Access-Control-Allow-Origin", "http://localhost:4200");
 		resp.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE");
 		resp.setHeader("Access-Control-Allow-Headers", "Content-type, Authorization");
-		resp.setHeader("Access-Control-Expose-Headers", "Authorization");
+        resp.setHeader("Access-Control-Expose-Headers", "Authorization");
+        resp.setHeader("Access-Control-Allow-Credentials", "true");
 	}
 }
