@@ -7,6 +7,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -46,6 +48,10 @@ public class Account {
     @Column
     private String state;
     
+    @Column
+    @Enumerated(EnumType.ORDINAL)
+    private Status status;
+
     @Column
     private String bio;
     
@@ -174,6 +180,13 @@ public class Account {
 
 	public void setSubscriptions(List<Channel> subscriptions) {
 		this.subscriptions = subscriptions;
+
+  public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
 	}
 
 	@Override
@@ -186,6 +199,7 @@ public class Account {
 		result = prime * result + id;
 		result = prime * result + ((state == null) ? 0 : state.hashCode());
 		result = prime * result + ((subscriptions == null) ? 0 : subscriptions.hashCode());
+		result = prime * result + ((status == null) ? 0 : status.hashCode());
 		return result;
 	}
 
@@ -224,14 +238,14 @@ public class Account {
 			if (other.subscriptions != null)
 				return false;
 		} else if (!subscriptions.equals(other.subscriptions))
+		if (status != other.status)
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "Account [id=" + id + ", country=" + country + ", state=" + state + ", bio=" + bio + ", friendsList="
+		return "Account [id=" + id + ", country=" + country + ", state=" + state + ", status=" + status + ", bio=" + bio + ", friendsList="
 				+ friendsList + ", subscriptions=" + subscriptions + "]";
 	}
-    
 }
