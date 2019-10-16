@@ -1,10 +1,16 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<<noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
+<noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
   enabled. Please enable
   Javascript and reload this page!</h2></noscript>
-<div id="main-content" class="container">
+<div id="main-content">
 
-    <div class="row">
+  <div class="col-md-4">
+    <div class="wrapper">
+      <app-navbar></app-navbar>
+    </div>
+  </div>
+    <!-- Testing WebSocket Connection
+      <div class="row">
         <div class="col-md-12">
            {{ greeting }}
         </div>
@@ -32,7 +38,17 @@
       </div>
 
       <p> {{ greeting }}</p>
-  </div>
+  </div> -->
+<div class="col-md-8">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
 
+            <button type="button" id="sidebarCollapse" class="btn btn-info" (click)="onCollapse()">
+                <i class="fas fa-align-left"></i>
+                <span>Toggle Sidebar</span>
+            </button>
+        </div>
+    </nav>
+  <router-outlet></router-outlet>
 </div>
-<router-outlet></router-outlet>
+</div>
