@@ -1,16 +1,17 @@
 package com.revature.dtos;
 
+import com.revature.models.Role;
+
 public class Principal {
 
 	private int id;
 	private String username;
 	private String password;
-	private String role;
-	public Principal(int id, String username, String password, String role) {
+	private Role role;
+	public Principal(int id, String username, Role role) {
 		super();
 		this.id = id;
 		this.username = username;
-		this.password = password;
 		this.role = role;
 	}
 	
@@ -32,10 +33,10 @@ public class Principal {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public String getRole() {
+	public Role getRole() {
 		return role;
 	}
-	public void setRole(String role) {
+	public void setRole(Role role) {
 		this.role = role;
 	}
 	

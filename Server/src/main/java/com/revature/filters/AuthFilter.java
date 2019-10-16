@@ -13,6 +13,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.revature.dtos.Principal;
+import com.revature.models.Role;
 import com.revature.security.JwtConfig;
 
 import io.jsonwebtoken.Claims;
@@ -44,8 +45,8 @@ public class AuthFilter extends OncePerRequestFilter {
 
         int id = Integer.parseInt(claims.getId());
         String username = claims.getSubject();
-        String role = claims.get("role", String.class);
-        Principal principal = new Principal(id, username, role);
+        String role = claims.get("role", String.class).trim();
+        Principal principal = new Principal(id, username, Role.valueOf(role));
         req.setAttribute("principal", principal);
     
         attachCorsResponseHeaders(resp);
