@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.revature.exceptions.BadRequestException;
+//import com.revature.exceptions.BadRequestException;
 import com.revature.models.Account;
 import com.revature.models.Channel;
 import com.revature.models.User;
@@ -49,9 +49,9 @@ public class AccountService {
 	
 	@Transactional(propagation=Propagation.REQUIRES_NEW)
 	public Account add(Account newAccount) {
-		if(!validateAccount(newAccount)) {
-			throw new BadRequestException("Invalid account");
-		}
+//		if(!validateAccount(newAccount)) {
+//			throw new BadRequestException("Invalid account");
+//		}
 		System.out.println(newAccount + " In Services...");
 		
 		return accountRepo.save(newAccount);
@@ -61,9 +61,9 @@ public class AccountService {
 	@Transactional
 	public boolean update(Account updatedAccount) {
 		
-		if(!validateAccount(updatedAccount)) {
-			throw new BadRequestException("Invalid account information provided");
-		}
+//		if(!validateAccount(updatedAccount)) {
+//			throw new BadRequestException("Invalid account information provided");
+//		}
 		
 		return accountRepo.update(updatedAccount);
 	}
