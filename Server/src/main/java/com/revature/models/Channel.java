@@ -3,11 +3,13 @@ package com.revature.models;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.EnumType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,6 +25,7 @@ import javax.persistence.Table;
 /**
  * Channel
  */
+
 @Entity
 @Table(name = "CHANNELS")
 @SequenceGenerator(name="channel_gen_id", allocationSize = 1, sequenceName = "channel_seq_id")
@@ -31,7 +34,7 @@ public class Channel {
     @Id
     @Column(name = "channel_id", nullable = false, unique = true)
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private int id; // Identification number that is unique
+    private int id; 											// Identification number that is unique
 
     @ManyToMany(cascade = CascadeType.REMOVE)
     @ElementCollection
@@ -46,6 +49,9 @@ public class Channel {
     @JoinColumn(name = "message_id")
     private List<Message> messages; // List of messages that have been made in this Channel
     
+    @ManyToMany(mappedBy = "subscriptions", fetch=FetchType.LAZY)
+    private List<Account> accounts;
+
     @Column
     private boolean open = true; // Boolean to check if the channel is public or private
 
@@ -97,46 +103,28 @@ public class Channel {
         this.open = !this.open;
     }
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + id;
-        result = prime * result + ((members == null) ? 0 : members.hashCode());
-        result = prime * result + ((messages == null) ? 0 : messages.hashCode());
-        result = prime * result + (open ? 1231 : 1237);
-        return result;
-    }
+	@Override
+	public int hashCode() {
+		return Objects.hash(accounts, id, members, messages, open);
+	}
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Channel other = (Channel) obj;
-        if (id != other.id)
-            return false;
-        if (members == null) {
-            if (other.members != null)
-                return false;
-        } else if (!members.equals(other.members))
-            return false;
-        if (messages == null) {
-            if (other.messages != null)
-                return false;
-        } else if (!messages.equals(other.messages))
-            return false;
-        if (open != other.open)
-            return false;
-        return true;
-    }
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Channel other = (Channel) obj;
+		return Objects.equals(accounts, other.accounts) && id == other.id && Objects.equals(members, other.members)
+				&& Objects.equals(messages, other.messages) && open == other.open;
+	}
 
-    @Override
-    public String toString() {
-        return "Channel [id=" + id + ", members=" + members + ", open=" + open + "]";
-    }
+	@Override
+	public String toString() {
+		return "Channel [id=" + id + ", members=" + members + ", messages=" + messages + ", accounts=" + accounts
+				+ ", open=" + open + "]";
+	}
 
 }

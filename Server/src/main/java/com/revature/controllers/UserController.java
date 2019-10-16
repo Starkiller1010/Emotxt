@@ -22,7 +22,7 @@ import com.revature.services.UserService;
 
 /**
  * 
- * Maps GET, POST, PUT, etc. for user meothds.
+ * Maps GET, POST, PUT, etc. for user methods.
  * Maps to /user
  *
  */
