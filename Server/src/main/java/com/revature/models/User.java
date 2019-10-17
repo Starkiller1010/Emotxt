@@ -69,14 +69,6 @@ public class User {
         this.email = email;
     }
 
-    public List<Message> getUserMessages() {
-        return userMessages;
-    }
-
-    public void setUserMessages(List<Message> userMessages) {
-        this.userMessages = userMessages;
-    }
-
     @Override
     public String toString() {
         return "User [email=" + email + ", id=" + id + ", password=" + password + ", username="
@@ -90,7 +82,6 @@ public class User {
         result = prime * result + ((email == null) ? 0 : email.hashCode());
         result = prime * result + id;
         result = prime * result + ((password == null) ? 0 : password.hashCode());
-        result = prime * result + ((userMessages == null) ? 0 : userMessages.hashCode());
         result = prime * result + ((username == null) ? 0 : username.hashCode());
         return result;
     }
@@ -115,11 +106,6 @@ public class User {
             if (other.password != null)
                 return false;
         } else if (!password.equals(other.password))
-            return false;
-        if (userMessages == null) {
-            if (other.userMessages != null)
-                return false;
-        } else if (!userMessages.equals(other.userMessages))
             return false;
         if (username == null) {
             if (other.username != null)
