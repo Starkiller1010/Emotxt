@@ -1,0 +1,14 @@
+#text-box {
+  width: 98%;
+  height: 25%;
+  vertical-align: bottom;
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0rem;
+  align-self: center;
+}
+
+#body{
+  height: 100%;
+  width: 100%;
+}
