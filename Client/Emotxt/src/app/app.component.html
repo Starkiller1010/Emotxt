@@ -4,51 +4,18 @@
   Javascript and reload this page!</h2></noscript>
 <div id="main-content">
 
-  <div class="col-md-4">
     <div class="wrapper">
       <app-navbar></app-navbar>
-    </div>
-  </div>
-    <!-- Testing WebSocket Connection
-      <div class="row">
-        <div class="col-md-12">
-           {{ greeting }}
-        </div>
-    </div>
 
-  <div class="row">
-      <div class="col-md-6">
-          <form class="form-inline">
-              <div class="form-group">
-                  <label for="connect">WebSocket connection:</label>
-                  <button (click)="connect()" class="btn btn-default" type="submit">Connect</button>
-                  <button (click)="disconnect()" class="btn btn-default" type="submit" disabled="disabled">Disconnect
-                  </button>
-              </div>
-          </form>
+      <div class="col-md-10">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <div class="container-fluid">
+
+        <button type="button" id="sidebarCollapse" class="btn btn-info" (click)="onCollapse()">
+          <i class="fas fa-align-left"></i>
+        </button>
       </div>
-      <div class="col-md-6">
-          <form class="form-inline">
-              <div class="form-group">
-                  <label for="name">What is your name?</label>
-                  <input type="text" [(ngModel)]="name" class="form-control" name="name"> <br>
-              </div>
-              <button (click)="sendMessage()" class="btn btn-default" type="submit">Send</button>
-          </form>
-      </div>
-
-      <p> {{ greeting }}</p>
-  </div> -->
-<div class="col-md-8">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-
-            <button type="button" id="sidebarCollapse" class="btn btn-info" (click)="onCollapse()">
-                <i class="fas fa-align-left"></i>
-                <span>Toggle Sidebar</span>
-            </button>
-        </div>
     </nav>
-  <router-outlet></router-outlet>
-</div>
-</div>
+    <router-outlet></router-outlet>
+  </div>
+  </div>

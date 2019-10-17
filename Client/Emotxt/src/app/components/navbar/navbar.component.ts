@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { NavBarHelperService } from 'src/app/services/navbar/nav-bar-helper.service';
 
 @Component({
   selector: 'app-navbar',
@@ -9,7 +11,7 @@ export class NavbarComponent implements OnInit {
 
   isCollapsed = false;
 
-  constructor() { }
+  constructor(private router: Router, private helper: NavBarHelperService) { }
 
   ngOnInit() {
   }

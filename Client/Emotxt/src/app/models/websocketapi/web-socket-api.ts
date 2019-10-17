@@ -1,6 +1,8 @@
 import * as SockJS from 'sockjs-client';
 import * as Stomp from 'stompjs';
 import { AppComponent } from '../../app.component';
+import { Component } from '@angular/compiler/src/core';
+import { TestingComponent } from 'src/app/components/testing/testing.component';
 
 export class WebSocketAPI {
 
@@ -9,9 +11,9 @@ export class WebSocketAPI {
   topic = '/topic/greetings';
   // topic = 'http://localhost:8080/topic/greetings';
   stompClient: any;
-  appComponent: AppComponent;
+  appComponent: TestingComponent;
 
-    constructor(appComponent: AppComponent) {
+    constructor(appComponent: TestingComponent) {
         this.appComponent = appComponent;
     }
 
