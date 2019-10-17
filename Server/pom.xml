@@ -168,6 +168,14 @@
 			<artifactId>commons-dbcp2</artifactId>
 			<version>2.5.0</version>
 		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/com.paralleldots/paralleldots -->
+	<dependency>
+    	<groupId>com.paralleldots</groupId>
+    	<artifactId>paralleldots</artifactId>
+    	<version>1.0.2</version>
+	</dependency>
+
 		
 	</dependencies>
 	
