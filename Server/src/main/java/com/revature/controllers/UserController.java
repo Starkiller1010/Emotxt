@@ -4,7 +4,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,9 +47,7 @@ public class UserController {
 	public User getUserById(@PathVariable int id) {
 		
 		log.info("Inside of getUserById of UserController.");
-		User test = userService.getById(id);
-		System.out.println(test);
-		return test;
+		return userService.getById(id);
 	}
 	
 	/**
