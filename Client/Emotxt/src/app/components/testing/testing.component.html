@@ -1,8 +1,5 @@
 Testing WebSocket Connection
       <div class="row">
-        <div class="col-md-12">
-           {{ greeting }}
-        </div>
     </div>
 
   <div class="row">
@@ -22,9 +19,12 @@ Testing WebSocket Connection
                   <label for="name">What is your name?</label>
                   <input type="text" [(ngModel)]="name" class="form-control" name="name"> <br>
               </div>
-              <button (click)="sendMessage()" class="btn btn-default" type="submit">Send</button>
+              <!-- <button (click)="sendMessage()" class="btn btn-default" type="submit">Send</button> -->
           </form>
       </div>
+<hr>
+<div class="container-fluid" id="message-list">
 
-      <p> {{ greeting }}</p>
-  </div>
+</div>
+</div>
+<app-message-box></app-message-box>

@@ -23,7 +23,6 @@ export class NavbarComponent implements OnInit {
     document.getElementById('sidebar').classList.remove('inactive');
     }
     this.isCollapsed = !this.isCollapsed;
-    console.log(`is now: ${this.isCollapsed}`);
   }
 
 }
