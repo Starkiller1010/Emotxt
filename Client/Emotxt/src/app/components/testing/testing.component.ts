@@ -14,7 +14,7 @@ export class TestingComponent implements OnInit, OnDestroy {
   constructor() { }
 
   ngOnDestroy(): void {
-    this.disconnect();
+   // this.disconnect();
   }
   ngOnInit() {
     this.webSocketAPI = new WebSocketAPI(this);
@@ -67,9 +67,9 @@ export class TestingComponent implements OnInit, OnDestroy {
 
     incoming.innerText =
     // tslint:disable-next-line: max-line-length
-    (`At: ${new Date().getMonth() + 1}/${new Date().getDay()}/${new Date().getFullYear()}::${new Date().getHours()}:${new Date().getMinutes()}
+    (`At: ${new Date().getMonth() + 1}/${new Date().getDay()}/${new Date().getFullYear()}: ${new Date().getHours()}:${new Date().getMinutes()}
     By: ${author}
-    "${message}"`);
+    Message: \n"${message}"`);
     messages.appendChild(content);
   }
 }
