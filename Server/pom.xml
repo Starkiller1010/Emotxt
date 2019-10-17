@@ -17,7 +17,7 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<jackson.version>2.10.0</jackson.version>
 		<log4j.version>2.11.1</log4j.version>
-		<spring.version>5.2.0.RELEASE</spring.version>
+		<spring.version>5.1.4.RELEASE</spring.version>
 	</properties>
 
 	<dependencies>
@@ -147,20 +147,20 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-websocket</artifactId>
-			<version>4.2.4.RELEASE</version>
+			<version>4.3.22.RELEASE</version>
 		</dependency>
 		 
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-messaging</artifactId>
-			<version>4.2.4.RELEASE</version>
+			<version>4.3.22.RELEASE</version>
 		</dependency>
 
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.springframework.integration</groupId>
 			<artifactId>spring-integration-stomp</artifactId>
-			<version>5.2.0.RELEASE</version>
-		</dependency>
+			<version>4.2.9.RELEASE</version>
+		</dependency> -->
 
 		<!-- Appache Commons Connection Pool -->
 		<dependency>

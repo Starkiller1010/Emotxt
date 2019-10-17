@@ -8,7 +8,7 @@ export class WebSocketAPI {
 
   webSocketEndPoint = 'http://localhost:8080/Emotxt/socket';
   // webSocketEndPoint = 'ws://localhost:8080/ws';
-  topic = '/topic/greetings';
+  topic = '/topic/hello';
   // topic = 'http://localhost:8080/topic/greetings';
   stompClient: any;
   appComponent: TestingComponent;
