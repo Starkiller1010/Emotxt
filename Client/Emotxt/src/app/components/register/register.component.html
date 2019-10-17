@@ -8,6 +8,15 @@
         [ngClass]="{'is-invalid': submitted && fields.username.errors}"/>
       <div *ngIf="submitted && fields.username.errors">
         <p *ngIf="fields.username.errors.required">Username is required!</p>
+        <p *ngIf="fields.username.errors.minimum">Username is too short!</p>
+        <div *ngIf="fields.username.errors">
+            <p> Usernames must: </p>
+            <ol>
+              <li>Start with a letter.</li>
+              <li>Consist of only letters, numbers and underscores.</li>
+              <li>Be a minimum of 6 characters long.</li>
+            </ol>
+        </div>
       </div>
     </div>
 
@@ -30,27 +39,8 @@
     </div>
 
     <div class="form-group">
-        <label for="email">Email</label>
-        <input type="text" class="form-control" formControlName="email"
-          [ngClass]="{'is-invalid': submitted && fields.email.errors}"/>
-        <div *ngIf="submitted && fields.email.errors">
-          <p *ngIf="fields.email.errors.required">Email is required!</p>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label for="email">Email</label>
-        <input type="text" class="form-control" formControlName="email"
-          [ngClass]="{'is-invalid': submitted && fields.email.errors}"/>
-        <div *ngIf="submitted && fields.email.errors">
-          <p *ngIf="fields.email.errors.required">Email is required!</p>
-        </div>
-    </div>
-
-    <div class="form-group">
         <label for="country">Country</label>
-        <input type="text" class="form-control" formControlName="country"
-          [ngClass]="{'is-invalid': submitted && fields.country.errors}"/>
+        <input type="text" class="form-control" formControlName="country"/>
         <div *ngIf="submitted && fields.country.errors">
           <p *ngIf="fields.country.errors">Error in country input!</p>
         </div>
