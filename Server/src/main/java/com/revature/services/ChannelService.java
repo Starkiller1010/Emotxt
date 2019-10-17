@@ -9,10 +9,11 @@
 // import org.springframework.transaction.annotation.Isolation;
 // import org.springframework.transaction.annotation.Transactional;
 
-// import com.revature.models.Channel;
-// import com.revature.models.Message;
-// import com.revature.models.User;
-// import com.revature.repos.ChannelRepository;
+import com.revature.models.Channel;
+import com.revature.models.Message;
+import com.revature.models.Role;
+import com.revature.models.User;
+import com.revature.repos.ChannelRepository;
 
 // /*
 //  * The service layer that validates and calls
@@ -83,16 +84,18 @@
 // 	 * @param newUser - The new user to add.
 // 	 */
 	
-// 	public void addMember(Channel chan, User newUser) {
+	public boolean addMember(Channel chan, User newUser) {
 		
 // 		log.info("Inside addMember in ChannelService.");
 // 		log.info("Checking if channel is valid.");
 		
-// 		if(channelRepo.getById(chan.getId()) != null) {
-// 			log.info("The channel exists. Calling addMember in repo now...");
-// 			channelRepo.addMember(newUser, chan);
-// 		}
-// 	}
+		if(channelRepo.getById(chan.getId()) != null) {
+			log.info("The channel exists. Calling addMember in repo now...");
+			channelRepo.addMember(newUser, chan);
+			return true;
+		}
+		return false;
+	}
 	
 // 	/**
 // 	 * Calls ChannelRepository's removeMember method to remove a member from a channel.
@@ -101,14 +104,17 @@
 // 	 * @param existingMember - The member to remove.
 // 	 */
 	
-// 	public void removeMember(Channel chan, User existingMember) {
+	@Transactional(isolation=Isolation.SERIALIZABLE)
+	public boolean removeMember(Channel chan, User existingMember, Role role) {
 		
-// 		log.info("Inside removeMember in ChannelService.");
-// 		if(channelRepo.getById(chan.getId()) != null) {
-// 			log.info("The channel exists. Calling removeMember in repo now...");
-// 			channelRepo.removeMember(existingMember, chan);
-// 		}
-// 	}
+		log.info("Inside removeMember in ChannelService.");
+		if(channelRepo.getById(chan.getId()) != null) {
+			log.info("The channel exists. Calling removeMember in repo now...");
+			channelRepo.removeMember(existingMember, role, chan);
+			return true;
+		}
+		return false;
+	}
 	
 // 	/**
 // 	 * Calls ChannelRepository's getMessages method to get all messages belonging to a channel.
@@ -132,14 +138,16 @@
 // 	 * @param chan - The channel the message should be added to.
 // 	 */
 	
-// 	public void addMessage(Message msg, Channel chan) {
+	public boolean addMessage(Message msg, Channel chan) {
 		
-// 		log.info("Inside addMessage in ChannelService.");
-// 		if(channelRepo.getById(chan.getId()) != null) {
-// 			log.info("The channel exists. Calling addMessage in repo now...");
-// 			channelRepo.addMessage(msg, chan);
-// 		}
-// 	}
+		log.info("Inside addMessage in ChannelService.");
+		if(channelRepo.getById(chan.getId()) != null) {
+			log.info("The channel exists. Calling addMessage in repo now...");
+			channelRepo.addMessage(msg, chan);
+			return true;
+		}
+		return false;
+	}
 	
 // 	/**
 // 	 * Calls ChannelRepository's getOpen method to check if a channel is open or not.
