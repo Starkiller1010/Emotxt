@@ -44,11 +44,13 @@ public class UserController {
 	 * @return User - A user possessing the given ID or null.
 	 */
 	
-	@GetMapping(value="/id/{id}", produces=MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value="/id/{id}", produces="application/json")
 	public User getUserById(@PathVariable int id) {
 		
 		log.info("Inside of getUserById of UserController.");
-		return userService.getById(id);
+		User test = userService.getById(id);
+		System.out.println(test);
+		return test;
 	}
 	
 	/**
@@ -120,6 +122,7 @@ public class UserController {
 	public ResponseEntity<HttpStatus> deleteUser(@RequestBody User existingUser) {
 		
 		log.info("Inside of deleteUser of UserController.");
+		log.info(existingUser.getId());
 		boolean wasDeleted = userService.delete(existingUser.getId());
 		return (wasDeleted == true)
 				? new ResponseEntity<>(HttpStatus.NO_CONTENT)

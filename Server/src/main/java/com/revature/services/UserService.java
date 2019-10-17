@@ -68,6 +68,7 @@ public class UserService {
 		return existingUser;
 	}
 	
+	@Transactional(isolation=Isolation.READ_UNCOMMITTED)
 	public User add(User newUser) {
 		
 		log.info("Inside of add in UserService.");

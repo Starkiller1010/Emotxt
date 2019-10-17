@@ -2,6 +2,7 @@ package com.revature.repos;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 
 import org.apache.logging.log4j.LogManager;
@@ -63,10 +64,10 @@ public class UserRepository {
 	public User getByUsername(String username) {
 		
 		log.info("Getting user by username.");
-		String query = "from Users where user_username = :username";
+		String query = "from User where username = :un";
 		try {
 			return sessionFactory.getCurrentSession().createQuery(query, User.class)
-					.setParameter(1, username)
+					.setParameter("un", username)
 					.getSingleResult();
 		} catch(NoResultException e) {
 			log.warn("No result found.");
@@ -109,7 +110,7 @@ public class UserRepository {
 	public User add(User newUser) {
 		
 		log.info("Inside add for UserRepo");
-		Session session = sessionFactory.getCurrentSession();
+		Session session = sessionFactory.openSession();
 		
 		try {
 			log.info("Beginning transaction.");
@@ -124,6 +125,10 @@ public class UserRepository {
 			log.info("Transaction failed! Rolling back changes now.");
 			session.getTransaction().rollback();
 			return null;
+		}
+		finally {
+			log.info("Closing session");
+			session.close();
 		}
 		log.info("Transaction successful!");
 		return newUser;
@@ -141,7 +146,7 @@ public class UserRepository {
 	public User updateUser(User updatedUser) {
 		
 		log.info("Inside updateUser in UserRepo.");
-		Session session = sessionFactory.getCurrentSession();
+		Session session = sessionFactory.openSession();
 		try {
 			log.info("Beginning transaction.");
 			session.beginTransaction();
@@ -153,6 +158,10 @@ public class UserRepository {
 			log.info("Transaction failed! Rolling back changes now.");
 			session.getTransaction().rollback();
 			return null;
+		}
+		finally {
+			log.info("Closing session");
+			session.close();
 		}
 		log.info("Transaction successful!");
 		return updatedUser;
@@ -166,14 +175,23 @@ public class UserRepository {
 	 * @return boolean - True on success and false on failure/rollback.
 	 */
 	
+	/******************************************
+	 * 
+	 * 			DELETE IS NOT WORKING CURRENTLY
+	 */
+	
 	public boolean deleteUser(int id) {
 		
 		log.info("Inside deleteUser in UserRepo.");
-		Session session = sessionFactory.getCurrentSession();
-		
+		Session session = sessionFactory.openSession();
 		try {
 			log.info("Loading user from session with ID of " + id);
 			User delUser = session.load(User.class, id);
+			if(delUser == null)
+			{
+				log.warn("User does not exist!");
+				return false;
+			}
 			log.info("Beginning transaction");
 			session.beginTransaction();
 			session.delete(delUser);
@@ -183,6 +201,10 @@ public class UserRepository {
 			log.info("Transaction failed! Rolling back now.");
 			session.getTransaction().rollback();
 			return false;
+		}
+		finally {
+			log.info("Closing session");
+			session.close();
 		}
 		log.info("Transaction succeeded!");
 		return true;
