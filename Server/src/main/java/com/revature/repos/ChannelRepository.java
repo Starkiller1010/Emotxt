@@ -5,6 +5,8 @@ import java.util.Map;
 
 import javax.persistence.NoResultException;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -18,6 +20,7 @@ import com.revature.models.User;
 public class ChannelRepository {
 	
 	private SessionFactory factory;
+	private Logger log = LogManager.getLogger(ChannelRepository.class);
 	
 	@Autowired
 	public ChannelRepository(SessionFactory sessionFactory) {
@@ -32,6 +35,7 @@ public class ChannelRepository {
 	
 	public List<Channel> getAll(User currentUser) {
 		
+		log.info("Inside of getAll in ChannelRepository.");
 		String query = "from channel_users u where u.user_id = :current_user";
 		try {
 			return factory.getCurrentSession().createQuery(query, Channel.class)
@@ -52,6 +56,7 @@ public class ChannelRepository {
 	
 	public Channel getById(int id) {
 		
+		log.info("Inside of getById in ChannelRepository.");
 		String query = "from channels where channel_id = :id";
 		try {
 			return factory.getCurrentSession().createQuery(query, Channel.class)
@@ -70,6 +75,7 @@ public class ChannelRepository {
 	
 	public List<User> getAllMembers(Channel chan) {
 		
+		log.info("Inside of getAllMembers in ChannelRepository.");
 		String query = "from channel_users where channel_id = :id";
 		
 		try {
@@ -89,6 +95,8 @@ public class ChannelRepository {
 	 */
 	
 	public void addMember(User newUser, Channel chan) {
+		
+		log.info("Inside of addMember in ChannelRepository.");
 		Map<Role, User> memberList = chan.getMembers();
 		if(memberList.size() < 1) {
 			memberList.put(Role.OWNER, newUser);
@@ -107,6 +115,8 @@ public class ChannelRepository {
 	 */
 	
 	public void removeMember(User delUser, Role role, Channel chan) {
+		
+		log.info("Inside of removeMember in ChannelRepository.");
 		Map<Role, User> memberList = chan.getMembers();
 		memberList.containsValue(delUser);
 		memberList.remove(role, delUser);
@@ -120,6 +130,8 @@ public class ChannelRepository {
 	 */
 	
 	public List<Message> getMessages(Channel chan) {
+		
+		log.info("Inside of getMessages in ChannelRepository.");
 		String query = "select message_id from channels";
 		return factory.getCurrentSession().createQuery(query, Message.class).getResultList();
 	}
@@ -131,6 +143,8 @@ public class ChannelRepository {
 	 */
 	
 	public void addMessage(Message msg, Channel chan) {
+		
+		log.info("Inside of addMessages in ChannelRepository.");
 		List<Message> messages = chan.getMessages();
 		messages.add(msg);
 		chan.setMessages(messages);
@@ -144,6 +158,7 @@ public class ChannelRepository {
 	
 	public boolean getOpen(Channel chan) {
 		
+		log.info("Inside of getOpen in ChannelRepository.");
 		String query = "select open from channels where channel_id = :id";
 		try {
 			return factory.getCurrentSession().createQuery(query, Channel.class)
@@ -162,6 +177,8 @@ public class ChannelRepository {
 	 */
 	
 	public void updateOpen(Channel chan) {
+		
+		log.info("Inside of updateOpen in ChannelRepository.");
 		chan.setOpen();
 	}
 }
