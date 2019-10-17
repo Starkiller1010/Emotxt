@@ -78,23 +78,35 @@ public class ChannelService {
 	}
 	
 	/**
+	 * Calls ChannelRepository's createChannel method to create a new channel
+	 * 
+	 * @param chan - New channel to add
+	 * @return Channel - Newly added channel
+	 */
+	
+	public Channel createChannel(Channel chan) {
+		
+		log.info("Inside createChannel in ChannelService.");
+		return channelRepo.createChannel(chan);
+	}
+	
+	/**
 	 * Calls ChannelRepository's addMember method to add a new member to a channel.
 	 * 
 	 * @param chan - The channel to add the user to.
 	 * @param newUser - The new user to add.
 	 */
 	
-	public boolean addMember(Channel chan, User newUser) {
+	public User addMember(Channel chan, User newUser) {
 		
 		log.info("Inside addMember in ChannelService.");
 		log.info("Checking if channel is valid.");
 		
 		if(channelRepo.getById(chan.getId()) != null) {
 			log.info("The channel exists. Calling addMember in repo now...");
-			channelRepo.addMember(newUser, chan);
-			return true;
+			return channelRepo.addMember(newUser, chan);
 		}
-		return false;
+		return null;
 	}
 	
 	/**
@@ -105,15 +117,16 @@ public class ChannelService {
 	 */
 	
 	@Transactional(isolation=Isolation.SERIALIZABLE)
-	public boolean removeMember(Channel chan, User existingMember, Role role) {
+	public User removeMember(Channel chan, User existingMember, Role role) {
 		
 		log.info("Inside removeMember in ChannelService.");
 		if(channelRepo.getById(chan.getId()) != null) {
 			log.info("The channel exists. Calling removeMember in repo now...");
-			channelRepo.removeMember(existingMember, role, chan);
-			return true;
+			User removedUser = channelRepo.removeMember(existingMember, role, chan);
+			if(removedUser == null) return null;
+			return removedUser;
 		}
-		return false;
+		return null;
 	}
 	
 	/**
@@ -138,15 +151,14 @@ public class ChannelService {
 	 * @param chan - The channel the message should be added to.
 	 */
 	
-	public boolean addMessage(Message msg, Channel chan) {
+	public Message addMessage(Message msg, Channel chan) {
 		
 		log.info("Inside addMessage in ChannelService.");
 		if(channelRepo.getById(chan.getId()) != null) {
 			log.info("The channel exists. Calling addMessage in repo now...");
-			channelRepo.addMessage(msg, chan);
-			return true;
+			return channelRepo.addMessage(msg, chan);
 		}
-		return false;
+		return null;
 	}
 	
 	/**

@@ -7,6 +7,7 @@ import javax.persistence.NoResultException;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -73,15 +74,26 @@ public class ChannelRepository {
 	 * @return List<User> - A list of users belonging 
 	 */
 	
+	@SuppressWarnings("unchecked")
 	public List<User> getAllMembers(Channel chan) {
 		
 		log.info("Inside of getAllMembers in ChannelRepository.");
-		String query = "from channel_users where channel_id = :id";
-		
+//		Map<Role, User> members = new HashMap<Role, User>();
+		String query = "select new map(c.members_KEY, c.members_user_id) from channel_users c where c.channel_id = :id";
+		//String query = "select new Role from channel_users.members_KEY where channel_id = :id";
 		try {
-			return factory.getCurrentSession().createQuery(query, User.class)
-					.setParameter("channel_id", chan.getId())
+			return factory.getCurrentSession().createQuery(query)
+					.setParameter("id", chan.getId())
 					.getResultList();
+			
+			
+//			List<Map<Role, User>> result = (List<Map<Role, User>>) factory.getCurrentSession().createQuery(query)
+//					.setParameter("id", chan.getId())
+//					.getResultList();
+//			for(Map<Role, User> el : result) {
+//				el.forEach((k, v) -> members.put(k, v));
+//			}
+//			return members;
 		}
 		catch(NoResultException e) {
 			return null;
@@ -94,7 +106,37 @@ public class ChannelRepository {
 	 * @param chan - The channel to add the new user to.
 	 */
 	
-	public void addMember(User newUser, Channel chan) {
+	public Channel createChannel(Channel chan) {
+		
+		log.info("Inside of createChannel in ChannelRepository.");
+		Session session = factory.openSession();
+		try {
+			log.info("Beginning transaction...");
+			session.beginTransaction();
+			session.save(chan);
+			session.getTransaction().commit();
+		}
+		catch(Exception e) {
+			log.warn("Transaction failed! Rolling back changes now!");
+			session.getTransaction().rollback();
+			return null;
+		}
+		finally {
+			log.info("Closing session.");
+			session.close();
+		}
+		log.info("Transaction was successful!");
+		return chan;
+	}
+	
+	/**
+	 * Adds a new user to a given channel
+	 * @param newUser - The user to be added.
+	 * @param chan - The channel to add the new user to.
+	 * @return 
+	 */
+	
+	public User addMember(User newUser, Channel chan) {
 		
 		log.info("Inside of addMember in ChannelRepository.");
 		Map<Role, User> memberList = chan.getMembers();
@@ -106,6 +148,7 @@ public class ChannelRepository {
 			memberList.put(Role.USER, newUser);
 			chan.setMembers(memberList);
 		}
+		return newUser;
 	}
 	
 	/**
@@ -114,13 +157,16 @@ public class ChannelRepository {
 	 * @param chan - Channel the user will be removed from.
 	 */
 	
-	public void removeMember(User delUser, Role role, Channel chan) {
+	public User removeMember(User delUser, Role role, Channel chan) {
 		
 		log.info("Inside of removeMember in ChannelRepository.");
 		Map<Role, User> memberList = chan.getMembers();
-		memberList.containsValue(delUser);
-		memberList.remove(role, delUser);
-		chan.setMembers(memberList);
+		if(memberList.containsValue(delUser)) {
+			memberList.remove(role, delUser);
+			chan.setMembers(memberList);
+			return delUser;
+		}
+		return null;
 	}
 	
 	/**
@@ -142,12 +188,17 @@ public class ChannelRepository {
 	 * @param chan - Channel to add the message to
 	 */
 	
-	public void addMessage(Message msg, Channel chan) {
+	public Message addMessage(Message msg, Channel chan) {
 		
 		log.info("Inside of addMessages in ChannelRepository.");
+		if(msg.getBody().trim() == "" || msg.getBody().trim().isEmpty()) {
+			log.warn("Message body was empty.");
+			return null;
+		}
 		List<Message> messages = chan.getMessages();
 		messages.add(msg);
 		chan.setMessages(messages);
+		return msg;
 	}
 	
 	/**

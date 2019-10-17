@@ -38,7 +38,7 @@ public class Channel {
     @ManyToMany(cascade = CascadeType.REMOVE)
     @ElementCollection
     @JoinTable(name = "CHANNEL_USERS", 
-    			joinColumns = @JoinColumn(referencedColumnName = "channel_id"), 
+    			joinColumns = @JoinColumn( name="channel_id", referencedColumnName = "channel_id"), 
     			inverseJoinColumns = @JoinColumn(referencedColumnName = "user_id"))
     @MapKeyEnumerated(value=EnumType.STRING)
 
