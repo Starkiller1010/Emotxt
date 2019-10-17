@@ -180,6 +180,7 @@ public class Account {
 
 	public void setSubscriptions(List<Channel> subscriptions) {
 		this.subscriptions = subscriptions;
+	}
 
   public Status getStatus() {
 		return status;

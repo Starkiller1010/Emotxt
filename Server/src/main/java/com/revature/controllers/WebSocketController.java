@@ -2,6 +2,8 @@ package com.revature.controllers;
 
 import com.revature.models.Greeting;
 import com.revature.models.HelloMessage;
+import com.revature.models.Message;
+import com.revature.models.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -21,11 +23,11 @@ public class WebSocketController {
    }
 
    @MessageMapping("/hello")
-  // @SendTo("/topic/greetings")
-   public void onReceivedMessage(String message) throws Exception {
-      System.out.println("Endpoint hit" + message);
-      // template.convertAndSend("/topic/greetings", "Got Message");
-     // return "Got Message";
+   @SendTo("/topic/hello")
+   public Message onReceivedMessage(String message) throws Exception {
+       System.out.println("Endpoint hit and received this: " + message);
+       //template.convertAndSend("/greetings", "Got Message");
+     return new Message(message, new User());
    }
  
 }
