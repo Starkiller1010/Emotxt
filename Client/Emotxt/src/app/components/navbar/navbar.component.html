@@ -1,3 +1,37 @@
-<p>
-  navbar works!
-</p>
+ <!-- Sidebar -->
+ <nav id="sidebar">
+    <div class="sidebar-header">
+        <h3>Emotxt</h3>
+    </div>
+
+    <ul class="list-unstyled components">
+        <h4>Welcome</h4>
+        <li class="active">
+            <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false"
+            class="dropdown-toggle">Quick Links</a>
+            <ul class="collapse list-unstyled" id="homeSubmenu">
+              <li>
+                    <a [routerLink]="['/home']">Home</a>
+                </li>
+                <li>
+                    <a [routerLink]="['/test']">Test</a>
+                </li>
+                <li>
+                    <a [routerLink]="['/login']">Login</a>
+                </li>
+                <li>
+                    <a [routerLink]="['/register']">Register</a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a [routerLink]="['/account']">Profile</a>
+        </li>
+        <li>
+            <a [routerLink]="['/message-board']">MessageBoard</a>
+        </li>
+        <li>
+            <a href="#">Recently Opened</a>
+        </li>
+    </ul>
+</nav>

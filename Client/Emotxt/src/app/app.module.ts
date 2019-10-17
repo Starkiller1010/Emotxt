@@ -17,6 +17,8 @@ import { AccountComponent } from './components/account/account.component';
 import { ChannellistComponent } from './components/channellist/channellist.component';
 import { FriendslistComponent } from './components/friendslist/friendslist.component';
 import { BlocklistComponent } from './components/blocklist/blocklist.component';
+import { TestingComponent } from './components/testing/testing.component';
+import { LandingComponent } from './components/landing/landing.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,9 @@ import { BlocklistComponent } from './components/blocklist/blocklist.component';
     TabBarComponent,
     MessageBoxComponent,
     AccountComponent,
-    ChannellistComponent
+    ChannellistComponent,
+    TestingComponent,
+    LandingComponent
   ],
   imports: [
     BrowserModule,

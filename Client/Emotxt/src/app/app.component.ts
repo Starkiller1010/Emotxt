@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { WebSocketAPI } from './models/websocketapi/web-socket-api';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ConnectionService } from './services/connection/connection.service';
 import { MessageService } from './services/message/message.service';
+import { NavbarComponent } from './components/navbar/navbar.component';
 
 @Component({
   selector: 'app-root',
@@ -10,43 +10,15 @@ import { MessageService } from './services/message/message.service';
   providers: [ConnectionService, MessageService]
 })
 export class AppComponent implements OnInit {
-  // constructor(private chatService: MessageService) {
-  //   chatService.messages.subscribe(msg => {
-  //     console.log('Response from websocket: '+ msg);
-  //   });
-  // }
 
-  // private message = {
-  //   author: 'tutorialedge',
-  //   message: 'this is a test message'
-  // };
+  @ViewChild(NavbarComponent) nav: NavbarComponent;
 
-  // sendMsg = () => {
-  //   console.log('New message from client to websocket...');
-  //   this.chatService.messages.next(this.message);
-  //   this.message.message = '';
-  // }
-  webSocketAPI: WebSocketAPI;
-  greeting: any;
-  name: string;
+  constructor() {}
+
+  onCollapse() {
+    this.nav.onCollapse();
+  }
 
   ngOnInit() {
-    this.webSocketAPI = new WebSocketAPI(new AppComponent());
-  }
-
-  connect() {
-    this.webSocketAPI._connect();
-  }
-
-  disconnect() {
-    this.webSocketAPI._disconnect();
-  }
-
-  sendMessage() {
-    this.webSocketAPI._send(this.name);
-  }
-
-  handleMessage(message) {
-    this.greeting = message;
   }
 }
