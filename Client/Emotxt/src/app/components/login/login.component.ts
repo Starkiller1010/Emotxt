@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth/auth.service';
 import { Router } from '@angular/router';
-import { FriendslistComponent } from '../friendslist/friendslist.component';
 
 @Component({
   selector: 'app-login',
