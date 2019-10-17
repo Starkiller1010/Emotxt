@@ -1,16 +1,31 @@
 import { Injectable } from '@angular/core';
 import { ConnectionService } from '../connection/connection.service';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Principal } from '../../models/principal/principal';
+import { environment as env } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor(private conn: ConnectionService) { }
+  private currentUserSubject: BehaviorSubject<Principal>;
+  currentUser$: Observable<Principal>;
 
-  doLogin = () => {
-    this.conn.sendGet('').subscribe(resp => {
+  constructor(private conn: ConnectionService) { 
+    this.currentUserSubject = new BehaviorSubject<Principal>(null);
+    this.currentUser$ = this.currentUserSubject.asObservable();
+  }
 
+  get currentUserValue(): Principal {
+    return this.currentUserSubject.value;
+  }
+
+  doLogin = (username: string, password: string) => {
+    let creds = { username, password };
+    this.conn.sendPost('auth', creds).subscribe(resp => {
+      console.log(resp);
     }, err => {
 
     });
