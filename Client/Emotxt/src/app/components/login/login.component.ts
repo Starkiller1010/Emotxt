@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit {
     this.submitted = true;
     if(this.loginForm.invalid) return;
 
-    this.authService.doLogin()
+    this.authService.doLogin(this.fields.username.value, this.fields.password.value);
 
   }
 
