@@ -8,11 +8,11 @@ public class Principal {
 	private String username;
 	private String password;
 	private Role role;
-	public Principal(int id, String username, Role role) {
+	public Principal(int id, String username, String role) {
 		super();
 		this.id = id;
 		this.username = username;
-		this.role = role;
+		this.role = Role.valueOf(role);
 	}
 	
 	public int getId() {

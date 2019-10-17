@@ -46,7 +46,7 @@ public class AuthFilter extends OncePerRequestFilter {
         int id = Integer.parseInt(claims.getId());
         String username = claims.getSubject();
         String role = claims.get("role", String.class).trim();
-        Principal principal = new Principal(id, username, Role.valueOf(role));
+        Principal principal = new Principal(id, username, role);
         req.setAttribute("principal", principal);
     
         attachCorsResponseHeaders(resp);
