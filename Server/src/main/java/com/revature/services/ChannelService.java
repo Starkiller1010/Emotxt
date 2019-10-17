@@ -15,10 +15,10 @@ import com.revature.models.Role;
 import com.revature.models.User;
 import com.revature.repos.ChannelRepository;
 
-/*
- * The service layer that validates and calls
- * methods from ServiceRepo.
- */
+// /*
+//  * The service layer that validates and calls
+//  * methods from ServiceRepo.
+//  */
 
 @Service
 public class ChannelService {
@@ -31,13 +31,13 @@ public class ChannelService {
 		this.channelRepo = channelRepo;
 	}
 	
-	/**
-	 * Calls ChannelRepository's getAll method to retrieve the
-	 * current user's channel list.
-	 * 
-	 * @param currentUser - The current user that's logged in.
-	 * @return List<Channel> - A list of channels the user belongs to.
-	 */
+// 	/**
+// 	 * Calls ChannelRepository's getAll method to retrieve the
+// 	 * current user's channel list.
+// 	 * 
+// 	 * @param currentUser - The current user that's logged in.
+// 	 * @return List<Channel> - A list of channels the user belongs to.
+// 	 */
 	
 	@Transactional(readOnly=true)
 	public List<Channel> getAll(User currentUser) {
@@ -46,14 +46,14 @@ public class ChannelService {
 		return channelRepo.getAll(currentUser);
 	}
 	
-	/**
-	 * Calls ChannelRepository's getById method to retrieve a channel
-	 * based on its ID
-	 * 
-	 * @param id - Integer value representing the ID.
-	 * @return Channel - The channel with the ID. If none exists,
-	 * null is returned.
-	 */
+// 	/**
+// 	 * Calls ChannelRepository's getById method to retrieve a channel
+// 	 * based on its ID
+// 	 * 
+// 	 * @param id - Integer value representing the ID.
+// 	 * @return Channel - The channel with the ID. If none exists,
+// 	 * null is returned.
+// 	 */
 	
 	@Transactional(readOnly=true)
 	public Channel getById(int id) {
@@ -62,13 +62,13 @@ public class ChannelService {
 		return channelRepo.getById(id);
 	}
 	
-	/**
-	 * Calls ChannelRepository's getAllMembers method to retireve a list
-	 * of all users belonging to the channel.
-	 * 
-	 * @param chan - The channel to get all members from.
-	 * @return List<User> - A list of users belonging to that channel.
-	 */
+// 	/**
+// 	 * Calls ChannelRepository's getAllMembers method to retireve a list
+// 	 * of all users belonging to the channel.
+// 	 * 
+// 	 * @param chan - The channel to get all members from.
+// 	 * @return List<User> - A list of users belonging to that channel.
+// 	 */
 	
 	@Transactional(readOnly=true)
 	public List<User> getAllMembers(Channel chan) {
@@ -77,12 +77,12 @@ public class ChannelService {
 		return channelRepo.getAllMembers(chan);
 	}
 	
-	/**
-	 * Calls ChannelRepository's addMember method to add a new member to a channel.
-	 * 
-	 * @param chan - The channel to add the user to.
-	 * @param newUser - The new user to add.
-	 */
+// 	/**
+// 	 * Calls ChannelRepository's addMember method to add a new member to a channel.
+// 	 * 
+// 	 * @param chan - The channel to add the user to.
+// 	 * @param newUser - The new user to add.
+// 	 */
 	
 	public boolean addMember(Channel chan, User newUser) {
 		
@@ -97,12 +97,12 @@ public class ChannelService {
 		return false;
 	}
 	
-	/**
-	 * Calls ChannelRepository's removeMember method to remove a member from a channel.
-	 * 
-	 * @param chan - The channel to remove the user from.
-	 * @param existingMember - The member to remove.
-	 */
+// 	/**
+// 	 * Calls ChannelRepository's removeMember method to remove a member from a channel.
+// 	 * 
+// 	 * @param chan - The channel to remove the user from.
+// 	 * @param existingMember - The member to remove.
+// 	 */
 	
 	@Transactional(isolation=Isolation.SERIALIZABLE)
 	public boolean removeMember(Channel chan, User existingMember, Role role) {
@@ -116,11 +116,11 @@ public class ChannelService {
 		return false;
 	}
 	
-	/**
-	 * Calls ChannelRepository's getMessages method to get all messages belonging to a channel.
-	 * @param chan - Channel to get all messages from.
-	 * @return List<Message> - The list of messages.
-	 */
+// 	/**
+// 	 * Calls ChannelRepository's getMessages method to get all messages belonging to a channel.
+// 	 * @param chan - Channel to get all messages from.
+// 	 * @return List<Message> - The list of messages.
+// 	 */
 	
 	public List<Message> getMessages(Channel chan) {
 		
@@ -132,11 +132,11 @@ public class ChannelService {
 		return null;
 	}
 	
-	/**
-	 * Calls ChannelRepository's addMessage method to add a new message to a channel.
-	 * @param msg - The message to add.
-	 * @param chan - The channel the message should be added to.
-	 */
+// 	/**
+// 	 * Calls ChannelRepository's addMessage method to add a new message to a channel.
+// 	 * @param msg - The message to add.
+// 	 * @param chan - The channel the message should be added to.
+// 	 */
 	
 	public boolean addMessage(Message msg, Channel chan) {
 		
@@ -149,11 +149,11 @@ public class ChannelService {
 		return false;
 	}
 	
-	/**
-	 * Calls ChannelRepository's getOpen method to check if a channel is open or not.
-	 * @param chan - The channel to check the open state.
-	 * @return boolean - True if open and false if private.
-	 */
+// 	/**
+// 	 * Calls ChannelRepository's getOpen method to check if a channel is open or not.
+// 	 * @param chan - The channel to check the open state.
+// 	 * @return boolean - True if open and false if private.
+// 	 */
 	
 	@Transactional(readOnly=true)
 	public boolean getOpen(Channel chan) {
@@ -166,10 +166,10 @@ public class ChannelService {
 		return false;
 	}
 	
-	/**
-	 * Calls ChannelRepository's setOpen method to change its openness.
-	 * @param chan - Channel to set the open property of.
-	 */
+// 	/**
+// 	 * Calls ChannelRepository's setOpen method to change its openness.
+// 	 * @param chan - Channel to set the open property of.
+// 	 */
 	
 	@Transactional(isolation=Isolation.REPEATABLE_READ)
 	public void updateOpen(Channel chan) {
