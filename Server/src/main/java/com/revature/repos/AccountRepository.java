@@ -74,7 +74,7 @@ public class AccountRepository {
 		persistentAccount.setState(updatedAccount.getState());
 		persistentAccount.setFriendsList(updatedAccount.getFriendsList());
 		persistentAccount.setSubscriptions(updatedAccount.getSubscriptions());
-	
+		persistentAccount.setStatus(updatedAccount.getStatus());
 		return true;
 	}
 

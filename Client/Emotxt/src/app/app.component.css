@@ -1,0 +1,29 @@
+.wrapper {
+  display: flex;
+  width: 100%;
+  align-items: stretch;
+}
+
+ul ul a {
+    font-size: 0.9em !important;
+    padding-left: 30px !important;
+    background: #6d7fcc;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #fafafa;
+}
+
+p {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.1em;
+    font-weight: 300;
+    line-height: 1.7em;
+    color: #999;
+}
+
+.container-fluid {
+  position: sticky;
+  align-items: flex-start;
+}

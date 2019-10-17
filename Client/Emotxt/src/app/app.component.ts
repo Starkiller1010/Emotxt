@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ConnectionService } from './services/connection/connection.service';
 import { MessageService } from './services/message/message.service';
+import { NavbarComponent } from './components/navbar/navbar.component';
 
 @Component({
   selector: 'app-root',
@@ -8,21 +9,16 @@ import { MessageService } from './services/message/message.service';
   styleUrls: ['./app.component.css'],
   providers: [ConnectionService, MessageService]
 })
-export class AppComponent {
-  constructor(private chatService: MessageService) {
-    chatService.messages.subscribe(msg => {
-      console.log('Response from websocket: '+ msg);
-    });
+export class AppComponent implements OnInit {
+
+  @ViewChild(NavbarComponent) nav: NavbarComponent;
+
+  constructor() {}
+
+  onCollapse() {
+    this.nav.onCollapse();
   }
 
-  private message = {
-    author: 'tutorialedge',
-    message: 'this is a test message'
-  };
-
-  sendMsg = () => {
-    console.log('New message from client to websocket...');
-    this.chatService.messages.next(this.message);
-    this.message.message = '';
+  ngOnInit() {
   }
 }
