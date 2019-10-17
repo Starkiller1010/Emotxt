@@ -8,6 +8,11 @@ public class Principal {
 	private String username;
 	private String password;
 	private Role role;
+	
+	public Principal() {
+		super();
+	}
+	
 	public Principal(int id, String username, Role role) {
 		super();
 		this.id = id;
