@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.Query;
 
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,11 +32,8 @@ public class AccountRepository {
 	}
 
 	public Account getById(int id) {
-		Account account = factory.openSession().get(Account.class, id);
-		return account;
+		return factory.getCurrentSession().get(Account.class, id);
 	}
-	
-
 	
 	public List<User> getAccountFriends(int accountId) {
 		String query = "select username from Friends_list "
@@ -44,7 +42,7 @@ public class AccountRepository {
 				+ "join users on Users.user_id = Accounts.userInfo "
 				+ "where Accounts.account_id = :accountId";
 		
-		return factory.getCurrentSession().createQuery(query, User.class)
+		return factory.getCurrentSession().createNativeQuery(query, User.class)
 			.setParameter("accountId", accountId)
 			.getResultList();
 

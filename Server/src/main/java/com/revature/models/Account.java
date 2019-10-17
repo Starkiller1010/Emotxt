@@ -25,13 +25,17 @@ import javax.persistence.Table;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 
 /**
  * Account
  */
+@JsonIdentityInfo(
+		generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Entity
 @Table(name = "ACCOUNTS")
 @SequenceGenerator(name="account_gen_id", allocationSize = 1, sequenceName = "account_seq_id")
@@ -56,13 +60,8 @@ public class Account {
     private String bio;
     
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "userInfo", referencedColumnName = "user_id")
+    @JoinColumn(name = "account_user", referencedColumnName = "user_id")
     private User user;
-    
-    @OneToMany
-    @JoinColumn(name = "message_id")
-    private List<Message> messages = new ArrayList<>(); // List of messages that have been made in this Channel
-    
     
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
@@ -72,9 +71,7 @@ public class Account {
         )
     private List<Account> friendsList;
     
-   
-    @ManyToMany(mappedBy = "friendsList", fetch=FetchType.EAGER)
-    private List<Account> friends;
+
     
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
@@ -181,8 +178,17 @@ public class Account {
 	public void setSubscriptions(List<Channel> subscriptions) {
 		this.subscriptions = subscriptions;
 	}
+	
 
-  public Status getStatus() {
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public Status getStatus() {
 		return status;
 	}
 

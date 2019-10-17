@@ -9,12 +9,18 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 /**
  * User
  */
+@JsonIdentityInfo(
+		generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Entity
 @Table(name = "USERS")
 @SequenceGenerator(name = "user_gen_id", sequenceName = "user_seq_id", allocationSize = 1)
@@ -36,6 +42,9 @@ public class User {
 
     @OneToMany(mappedBy = "author", fetch = FetchType.EAGER)
     private List<Message> userMessages;
+    
+//    @OneToOne(mappedBy="user")
+//    private Account account;
 
     public int getId() {
         return id;

@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.revature.dtos.ErrorResponse;
+import com.revature.exceptions.BadRequestException;
 //import com.revature.dtos.ErrorResponse;
 //import com.revature.exceptions.BadRequestException;
 import com.revature.models.Account;
@@ -45,11 +47,19 @@ public class AccountController {
 	@GetMapping(value="/{id}/friends", produces="application/json")
 	public List<User> getAccountFriends(@PathVariable int id) {
 		if(id < 1) {
-			//throw new BadRequestException("Invalid id for account.");
-			System.out.println("bad request");
+			throw new BadRequestException("Invalid id for account.");
 		}
 		
 		return  accountService.getFriends(id);
+	}
+	
+	@GetMapping(value="/{id}/channels", produces="application/json")
+	public List<Channel> getAccountSubscriptions(@PathVariable int id) {
+		if(id < 1) {
+			throw new BadRequestException("Invalid id for account.");
+		}
+		
+		return accountService.getChannels(id);
 	}
 	
 	@GetMapping(value="/{id}", produces="application/json")
@@ -73,15 +83,14 @@ public class AccountController {
 	}
 	
 	
-	
-//	@ExceptionHandler
-//	@ResponseStatus(HttpStatus.UNAUTHORIZED)
-//	public ErrorResponse handleBadRequestException(BadRequestException bre) {
-//		ErrorResponse err = new ErrorResponse();
-//		err.setStatus(HttpStatus.BAD_REQUEST.value());
-//		err.setMessage(bre.getMessage());
-//		err.setTimestamp(System.currentTimeMillis());
-//		return err;
-//	}
+	@ExceptionHandler
+	@ResponseStatus(HttpStatus.UNAUTHORIZED)
+	public ErrorResponse handleBadRequestException(BadRequestException bre) {
+		ErrorResponse err = new ErrorResponse();
+		err.setStatus(HttpStatus.BAD_REQUEST.value());
+		err.setMessage(bre.getMessage());
+		err.setTimestamp(System.currentTimeMillis());
+		return err;
+	}
 		
 }
