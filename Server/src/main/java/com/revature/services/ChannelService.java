@@ -1,13 +1,13 @@
-// package com.revature.services;
+package com.revature.services;
 
-// import java.util.List;
+import java.util.List;
 
-// import org.apache.logging.log4j.LogManager;
-// import org.apache.logging.log4j.Logger;
-// import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.stereotype.Service;
-// import org.springframework.transaction.annotation.Isolation;
-// import org.springframework.transaction.annotation.Transactional;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.revature.models.Channel;
 import com.revature.models.Message;
@@ -20,16 +20,16 @@ import com.revature.repos.ChannelRepository;
 //  * methods from ServiceRepo.
 //  */
 
-// @Service
-// public class ChannelService {
+@Service
+public class ChannelService {
 
-// 	private Logger log = LogManager.getLogger(UserService.class);
-// 	private ChannelRepository channelRepo;
+	private Logger log = LogManager.getLogger(UserService.class);
+	private ChannelRepository channelRepo;
 	
-// 	@Autowired
-// 	public ChannelService(ChannelRepository channelRepo) {
-// 		this.channelRepo = channelRepo;
-// 	}
+	@Autowired
+	public ChannelService(ChannelRepository channelRepo) {
+		this.channelRepo = channelRepo;
+	}
 	
 // 	/**
 // 	 * Calls ChannelRepository's getAll method to retrieve the
@@ -39,12 +39,12 @@ import com.revature.repos.ChannelRepository;
 // 	 * @return List<Channel> - A list of channels the user belongs to.
 // 	 */
 	
-// 	@Transactional(readOnly=true)
-// 	public List<Channel> getAll(User currentUser) {
+	@Transactional(readOnly=true)
+	public List<Channel> getAll(User currentUser) {
 		
-// 		log.info("Inside getAll of ChannelService.");
-// 		return channelRepo.getAll(currentUser);
-// 	}
+		log.info("Inside getAll of ChannelService.");
+		return channelRepo.getAll(currentUser);
+	}
 	
 // 	/**
 // 	 * Calls ChannelRepository's getById method to retrieve a channel
@@ -55,12 +55,12 @@ import com.revature.repos.ChannelRepository;
 // 	 * null is returned.
 // 	 */
 	
-// 	@Transactional(readOnly=true)
-// 	public Channel getById(int id) {
+	@Transactional(readOnly=true)
+	public Channel getById(int id) {
 		
-// 		log.info("Inside getById in ChannelService.");
-// 		return channelRepo.getById(id);
-// 	}
+		log.info("Inside getById in ChannelService.");
+		return channelRepo.getById(id);
+	}
 	
 // 	/**
 // 	 * Calls ChannelRepository's getAllMembers method to retireve a list
@@ -70,12 +70,12 @@ import com.revature.repos.ChannelRepository;
 // 	 * @return List<User> - A list of users belonging to that channel.
 // 	 */
 	
-// 	@Transactional(readOnly=true)
-// 	public List<User> getAllMembers(Channel chan) {
+	@Transactional(readOnly=true)
+	public List<User> getAllMembers(Channel chan) {
 		
-// 		log.info("Inside getByChannel in ChannelService.");
-// 		return channelRepo.getAllMembers(chan);
-// 	}
+		log.info("Inside getByChannel in ChannelService.");
+		return channelRepo.getAllMembers(chan);
+	}
 	
 // 	/**
 // 	 * Calls ChannelRepository's addMember method to add a new member to a channel.
@@ -86,8 +86,8 @@ import com.revature.repos.ChannelRepository;
 	
 	public boolean addMember(Channel chan, User newUser) {
 		
-// 		log.info("Inside addMember in ChannelService.");
-// 		log.info("Checking if channel is valid.");
+		log.info("Inside addMember in ChannelService.");
+		log.info("Checking if channel is valid.");
 		
 		if(channelRepo.getById(chan.getId()) != null) {
 			log.info("The channel exists. Calling addMember in repo now...");
@@ -122,15 +122,15 @@ import com.revature.repos.ChannelRepository;
 // 	 * @return List<Message> - The list of messages.
 // 	 */
 	
-// 	public List<Message> getMessages(Channel chan) {
+	public List<Message> getMessages(Channel chan) {
 		
-// 		log.info("Inside getMessage in ChannelService.");
-// 		if(channelRepo.getById(chan.getId()) != null) {
-// 			log.info("The channel exists. Calling getMessages in repo now...");
-// 			return channelRepo.getMessages(chan);
-// 		}
-// 		return null;
-// 	}
+		log.info("Inside getMessage in ChannelService.");
+		if(channelRepo.getById(chan.getId()) != null) {
+			log.info("The channel exists. Calling getMessages in repo now...");
+			return channelRepo.getMessages(chan);
+		}
+		return null;
+	}
 	
 // 	/**
 // 	 * Calls ChannelRepository's addMessage method to add a new message to a channel.
@@ -155,30 +155,30 @@ import com.revature.repos.ChannelRepository;
 // 	 * @return boolean - True if open and false if private.
 // 	 */
 	
-// 	@Transactional(readOnly=true)
-// 	public boolean getOpen(Channel chan) {
+	@Transactional(readOnly=true)
+	public boolean getOpen(Channel chan) {
 		
-// 		log.info("Inside getOpen in ChannelService.");
-// 		if(channelRepo.getById(chan.getId()) != null) {
-// 			log.info("The channel exists. Calling getOpen in repo now...");
-// 			return channelRepo.getOpen(chan);
-// 		}
-// 		return false;
-// 	}
+		log.info("Inside getOpen in ChannelService.");
+		if(channelRepo.getById(chan.getId()) != null) {
+			log.info("The channel exists. Calling getOpen in repo now...");
+			return channelRepo.getOpen(chan);
+		}
+		return false;
+	}
 	
 // 	/**
 // 	 * Calls ChannelRepository's setOpen method to change its openness.
 // 	 * @param chan - Channel to set the open property of.
 // 	 */
 	
-// 	@Transactional(isolation=Isolation.REPEATABLE_READ)
-// 	public void updateOpen(Channel chan) {
+	@Transactional(isolation=Isolation.REPEATABLE_READ)
+	public void updateOpen(Channel chan) {
 		
-// 		log.info("Inside setOpen in ChannelService.");
-// 		if(channelRepo.getById(chan.getId()) != null) {
-// 			log.info("The channel exists. Calling updateOpen in repo now...");
-// 			channelRepo.updateOpen(chan);
-// 		}
-// 	}
+		log.info("Inside setOpen in ChannelService.");
+		if(channelRepo.getById(chan.getId()) != null) {
+			log.info("The channel exists. Calling updateOpen in repo now...");
+			channelRepo.updateOpen(chan);
+		}
+	}
 	
-// }
+}
