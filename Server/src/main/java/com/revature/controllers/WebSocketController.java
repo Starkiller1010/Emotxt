@@ -2,8 +2,6 @@ package com.revature.controllers;
 
 import com.revature.apis.EmotionAPI;
 import com.revature.dtos.Letter;
-import com.revature.models.Message;
-import com.revature.models.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -22,11 +20,12 @@ public class WebSocketController {
    }
 
    @MessageMapping("/hello")
-   @SendTo("/topic/hello")
-   public Letter onReceivedMessage(Letter message) throws Exception {
+   //@SendTo("/topic/hello")
+   public void onReceivedMessage(Letter message) throws Exception {
       System.out.println("Endpoint hit and received this: " + message);
       String emo = EmotionAPI.getInstance().emotionGuage(message.getBody());
-      return new Letter(message.getBody(), message.getAuthor(), emo);
+      template.convertAndSend("/topic/"+message.getDestination(),  new Letter(message.getBody(), message.getAuthor(), emo));
+      //return new Letter(message.getBody(), message.getAuthor(), emo);
    }
  
 }

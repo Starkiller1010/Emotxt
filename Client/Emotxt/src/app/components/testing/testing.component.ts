@@ -11,6 +11,7 @@ export class TestingComponent implements OnInit, OnDestroy {
 
   webSocketAPI: WebSocketAPI;
   name: string;
+  dest: string;
 
   constructor(private converter: EmotionalTextService) { }
 
@@ -22,7 +23,7 @@ export class TestingComponent implements OnInit, OnDestroy {
   }
 
   connect() {
-    this.webSocketAPI._connect();
+    this.webSocketAPI._connect('hello');
   }
 
   disconnect() {

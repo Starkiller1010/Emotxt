@@ -6,7 +6,8 @@ import { Message } from '../message/message';
 export class WebSocketAPI {
 
   webSocketEndPoint = 'http://localhost:8080/Emotxt/socket';
-  topic = '/topic/hello';
+  topic = '/topic/';
+  dest: string;
 
   stompClient: any;
   appComponent: TestingComponent;
@@ -15,12 +16,13 @@ export class WebSocketAPI {
         this.appComponent = appComponent;
     }
 
-    _connect() {
+    _connect(uri: string) {
+        this.dest = uri;
         console.log('Initialize WebSocket Connection');
         const ws = new SockJS(this.webSocketEndPoint);
         this.stompClient = Stomp.over(ws);
         this.stompClient.connect({}, (frame) => {
-          this.stompClient.subscribe(this.topic, (sdkEvent) => {
+          this.stompClient.subscribe(this.topic + this.dest, (sdkEvent) => {
             this.onMessageReceived(sdkEvent);
             });
         }, this.errorCallBack);
@@ -38,7 +40,7 @@ export class WebSocketAPI {
         console.log('errorCallBack -> ' + error);
         setTimeout(() => {
           if (this !== null) {
-               this._connect(); }
+               this._connect(this.dest); }
         }, 5000);
     }
 
@@ -48,7 +50,7 @@ export class WebSocketAPI {
   */
     _send(message: string, author: string) {
         console.log('sending message api via web socket');
-        const letter = new Message(message, author);
+        const letter = new Message(message, author, this.dest);
         this.stompClient.send('/app/hello', {}, JSON.stringify(letter));
     }
 
