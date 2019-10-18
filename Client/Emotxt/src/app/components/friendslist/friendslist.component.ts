@@ -18,21 +18,22 @@ export class FriendslistComponent implements OnInit {
 
     const httpHeaders = new HttpHeaders({
       'Content-Type': 'application/json',
+      // tslint:disable-next-line: object-literal-key-quotes
       'Authorization': localStorage.getItem('emo-jwt')
     });
 
     console.log('In the friend component before get friends request');
-    // console.log(creds);
-    // console.log(httpHeaders);
+    const accountId = this.authService.currentUser$.subscribe(user => user.accountId );
 
-    return this.conn.sendGet(`accounts/${this.authService.currentUserValue.accountId}/friends`, httpHeaders).subscribe(resp => {
-      console.log("In auth service resp");
+    return this.conn.sendGet(`accounts/${accountId}/friends`, httpHeaders).subscribe(resp => {
+      console.log('In auth service resp');
       console.log(resp);
+      const temp = resp.body as object[];
 
-      resp.body.forEach(element => {
+      temp.forEach(element => {
         this.friends.push(element);
       });
-    })
+    });
 
   }
 

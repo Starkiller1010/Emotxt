@@ -1,19 +1,17 @@
 package com.revature.repos;
 
-import java.lang.annotation.Annotation;
 import java.util.List;
 
 import javax.persistence.Query;
 
-import org.hibernate.Hibernate;
+import com.revature.models.Account;
+import com.revature.models.Channel;
+import com.revature.models.User;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
-import com.revature.models.Account;
-import com.revature.models.Channel;
-import com.revature.models.User;
 
 @Repository
 public class AccountRepository {
@@ -26,7 +24,7 @@ public class AccountRepository {
 	}
 
 	public List<Account> getAll() {
-		List accounts = factory.getCurrentSession().createQuery("from Account", Account.class).getResultList();
+		List<Account> accounts = factory.getCurrentSession().createQuery("from Account", Account.class).getResultList();
 		return accounts;
 		
 	}
@@ -44,8 +42,9 @@ public class AccountRepository {
 		String query = "select users.user_id, users.username, users.email, accounts.state, accounts.country from users join accounts on users.user_id = accounts.account_user where accounts.account_id in (select friends_list.them from friends_list join accounts on friends_list.me = accounts.account_id"
 				+ " where accounts.account_id = " + accountId + ")";
 				
-		
-		return factory.getCurrentSession().createNativeQuery(query).getResultList();
+		@SuppressWarnings("unchecked")
+		List<User> friends = factory.getCurrentSession().createNativeQuery(query).getResultList();
+		return friends;
 
 	}
 	
@@ -53,6 +52,7 @@ public class AccountRepository {
 		Session session = factory.getCurrentSession();
 		Query query = session.createQuery("SELECT channels FROM accounts join subscriptions  WHERE account_id = :id");
 		query.setParameter("id", accountId);
+		@SuppressWarnings("unchecked")
 		List<Channel> channels = query.getResultList();
 		return channels;
 		

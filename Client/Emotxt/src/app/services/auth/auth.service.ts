@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Principal } from '../../models/principal/principal';
+import { Account } from 'src/app/models/account/account';
 
 
 @Injectable({
@@ -14,17 +15,17 @@ export class AuthService {
   private currentUserSubject: BehaviorSubject<Principal>;
   currentUser$: Observable<Principal>;
 
-  constructor(private conn: ConnectionService, private router: Router) { 
+  constructor(private conn: ConnectionService, private router: Router) {
     this.currentUserSubject = new BehaviorSubject<Principal>(null);
     this.currentUser$ = this.currentUserSubject.asObservable();
   }
 
-  get currentUserValue(): Principal {
-    return this.currentUserSubject.value;
+  get currentUserValue() {
+    return this.currentUser$;
   }
 
   doLogin = (username: string, password: string) => {
-    
+
     let creds = { "username": username, "password": password };
     const httpHeaders = new HttpHeaders({
       'Content-Type': 'application/json'
@@ -37,18 +38,20 @@ export class AuthService {
     this.conn.sendPost('auth', JSON.stringify(creds), httpHeaders).subscribe(resp => {
       console.log("In auth service resp");
       console.log(resp);
-      
-      let principal = new Principal(
-        resp.body.id,
-        resp.body.username,
-        resp.body.role
+
+      const temp_prin = resp.body as Principal;
+      const principal = new Principal(
+        temp_prin.id,
+        temp_prin.username,
+        temp_prin.role
       );
-      principal.accountId = resp.body.account_id;
-      principal.state = resp.body.state;
-      principal.country = resp.body.country;
+      const temp_account = resp.body as Account;
+      principal.accountId =  temp_account.id;
+      principal.state = temp_account.state;
+      principal.country = temp_account.country;
 
       console.log(principal);
-      
+
       console.log(resp.headers.get('Authorization'));
       localStorage.setItem('emo-jwt', resp.headers.get('Authorization'));
       this.currentUserSubject.next(principal);

@@ -9,7 +9,7 @@
 	<name>Emotxt</name>
 	<description>Emotionally text-to-speech messenger</description>
 	<build>
-		<finalName>${artifactId}</finalName>
+		<finalName>${project.artifactId}</finalName>
 	</build>
 
 	<properties>
