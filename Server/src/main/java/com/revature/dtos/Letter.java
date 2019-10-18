@@ -11,6 +11,8 @@ public class Letter {
 
     private String emotion;
 
+    private String destination;
+
     public Letter() {
         super();
     }
@@ -85,4 +87,14 @@ public class Letter {
     public void setEmotion(String emotion) {
         this.emotion = emotion;
     }
+
+    public String getDestination() {
+        return destination;
+    }
+
+    public void setDestination(String destination) {
+        this.destination = destination;
+    }
+
+    
 }
