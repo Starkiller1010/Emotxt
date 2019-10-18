@@ -35,6 +35,9 @@ public class Channel {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "channel_gen_id")
     private int id; 											// Identification number that is unique
 
+    @Column
+    private String name;
+
     @ManyToMany(cascade = CascadeType.REMOVE)
     @ElementCollection
     @JoinTable(name = "CHANNEL_USERS", 
