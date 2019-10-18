@@ -4,6 +4,7 @@ phases:
   install:
     runtime-versions:
       java: openjdk8
+      nodejs: 10
   pre_build:
     commands:
       - echo Build started on `date`
@@ -11,14 +12,37 @@ phases:
       # (which cannot be obtained from the Maven central repo), we can use this 
       # command to install it into this environment's .m2 directory. Assuming
       # that the jar is available to us from some place.
-      - cd ./Server/
+      - echo Navigating to Server component to install JAR...
+      - pushd ./Server/
       - mvn install:install-file -Dfile=./src/main/resources/ojdbc7-11.2.0.jar -DgroupId=com.oracle -DartifactId=ojdbc7 -Dversion=11.2.0 -Dpackaging=jar
+      - echo Oracle JAR installed successfully. Navigating to Client src folder...
+      - popd
+      - pushd ./Client/Emotxt
+      - echo Installing NPM modules for Client component
+      - npm install
+      - echo Installing Angular CLI
+      - npm install -g angular/cli
+      - echo Pre_build completed on `date`
   build:
     commands:
-      #- cd ./Server/
+      - pwd
+      - echo Navigating to Server component to begin installation
+      - pushd ./Server/
+      - echo Building...
       - mvn clean package
       - mv target/Emotxt.war ./Emotxt-0.0.1-SNAPSHOT.war
-    
+      - echo Build succeeded on `date`. Moving to Client component
+      - popd
+      - pushd ./Client/Emotxt/
+      - echo Beginning Angular build
+      - ng build
+      - echo Client build completed on `date`
+  post_build:
+    commands:
+      - echo Moving dist folder contents to pre-configured S3 bucket
+      - aws s3 sync --delete dist/Emotxt s3://elasticbeanstalk-us-east-2-635354956793
+      - echo dist folder contents successfully uploaded to bucket
+  
 artifacts:
   files:
     - ./Server/Emotxt-0.0.1-SNAPSHOT.war
