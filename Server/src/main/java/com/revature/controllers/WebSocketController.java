@@ -1,5 +1,6 @@
 package com.revature.controllers;
 
+import com.revature.apis.EmotionAPI;
 import com.revature.dtos.Letter;
 import com.revature.models.Message;
 import com.revature.models.User;
@@ -24,7 +25,8 @@ public class WebSocketController {
    @SendTo("/topic/hello")
    public Letter onReceivedMessage(Letter message) throws Exception {
       System.out.println("Endpoint hit and received this: " + message);
-      return new Letter(message.getBody(), message.getAuthor());
+      String emo = EmotionAPI.getInstance().emotionGuage(message.getBody());
+      return new Letter(message.getBody(), message.getAuthor(), emo);
    }
  
 }

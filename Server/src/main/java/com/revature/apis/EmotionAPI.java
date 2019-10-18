@@ -14,15 +14,20 @@ import okhttp3.Response;
 /**
  * EmotionAPI
  */
-public class EmotionAPI {
+public final class EmotionAPI {
 
     private Properties props = new Properties();
-    OkHttpClient client = new OkHttpClient();
+    private String api_key;
+    private OkHttpClient client = new OkHttpClient();
+    private static EmotionAPI emotionAPI = new EmotionAPI();
 
-    public EmotionAPI() {
+    private EmotionAPI() {
         super();
         try {
-			props.load(new FileReader("src/main/resources/app.properties"));
+            
+            props.load(new FileReader("F:\\Code Projects\\Emotxt\\Server\\src\\main\\resources\\app.properties"));
+            api_key = props.getProperty("emotion-api-key");
+
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -30,21 +35,24 @@ public class EmotionAPI {
 		}
     }
 
+    public static EmotionAPI getInstance() {
+        return emotionAPI;
+    }
+
     // for single sentence
-    public String singleStringEmotion(String text) {
+    public String emotionGuage(String text) {
 
-        try {
-        String api_key = props.getProperty("emotion-api-key");
         if(api_key == null) return null;
-
+        
         String url = "https://apis.paralleldots.com/v5/emotion";
         
         RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
         .addFormDataPart("api_key", api_key).addFormDataPart("text", text).build();
-
+        
         Request request = new Request.Builder().url(url).post(requestBody).addHeader("cache-control", "no-cache")
         .build();
-
+    try {
+        
         Response response = client.newCall(request).execute();
         return response.body().string();
         
@@ -57,26 +65,5 @@ public class EmotionAPI {
     return null;
     
 }
-    
-    public void method2 (String[] text){
-        if(text == null || text.length == 0)
-            return;
-        // for multiple sentence as array
-        String api_key = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
-        String lang_code = "en";
-        String url = "https://apis.paralleldots.com/v5/emotion_batch";
-        OkHttpClient client = new OkHttpClient();
-            RequestBody requestBody = new MultipartBody.Builder()
-            .setType(MultipartBody.FORM)
-            .addFormDataPart("api_key", api_key)
-            .addFormDataPart("text", text)
-            .build();
-            Request request = new Request.Builder()
-              .url(url)
-              .post(requestBody)
-              .addHeader("cache-control", "no-cache")
-              .build();
-            Response response = client.newCall(request).execute();
-            System.out.println(response.body().string());
-    }
+
 }

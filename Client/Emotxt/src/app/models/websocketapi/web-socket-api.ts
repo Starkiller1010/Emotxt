@@ -56,6 +56,6 @@ export class WebSocketAPI {
       console.dir(message);
       console.log('Message Received from Server :: ' + message.body);
       const content = JSON.parse(message.body);
-      this.appComponent.handleMessage(content['body'], content['author']);
+      this.appComponent.handleMessage(content['body'], content['author'], content['emotion']);
     }
 }
