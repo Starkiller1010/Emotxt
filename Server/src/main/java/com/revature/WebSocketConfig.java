@@ -22,7 +22,7 @@ import org.springframework.web.socket.server.support.DefaultHandshakeHandler;
 @EnableWebSocketMessageBroker
 @EnableWebSocket
 @ComponentScan("com.revature")
-public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer implements WebSocketConfigurer {
+public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
@@ -43,22 +43,13 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer im
         registry.setApplicationDestinationPrefixes("/app"); 
     }
 
-    @Override
-	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-		registry.addHandler(myHandler(), "/myHandler").withSockJS();
-	}
-
-	@Bean
-	public WebSocketHandler myHandler() {
-		return new MyHandler();
-	}
-
-    // @Bean
-	// public ServletServerContainerFactoryBean createWebSocketContainer() {
-	// 	ServletServerContainerFactoryBean container = new ServletServerContainerFactoryBean();
-	// 	container.setMaxTextMessageBufferSize(8192);
-	// 	container.setMaxBinaryMessageBufferSize(8192);
-	// 	return container;
+    // @Override
+	// public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
+	// 	registry.addHandler(myHandler(), "/myHandler").withSockJS();
 	// }
-    
+
+	// @Bean
+	// public WebSocketHandler myHandler() {
+	// 	return new MyHandler();
+	// }
 }

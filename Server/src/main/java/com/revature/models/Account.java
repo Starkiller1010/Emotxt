@@ -177,7 +177,6 @@ public class Account {
 	public void setSubscriptions(List<Channel> subscriptions) {
 		this.subscriptions = subscriptions;
 	}
-	
 
 	public User getUser() {
 		return user;
@@ -186,7 +185,7 @@ public class Account {
 	public void setUser(User user) {
 		this.user = user;
 	}
-
+  
 	public Status getStatus() {
 		return status;
 	}
