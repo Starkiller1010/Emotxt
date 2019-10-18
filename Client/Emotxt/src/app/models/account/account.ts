@@ -13,8 +13,8 @@ export class Account {
     friends: Array<Account>;
     subscriptions: Array<Channel>
 
-    constructor(user: User, id?: number, country?: string, state?: string, city?: string,
-                status?: string, bio?: string, friends?: Array<Account>, subscriptions?: Array<Channel>)
+    constructor(user: User, id?: number, country?: string, bio?: string, state?: string, city?: string,
+                status?: string, friends?: Array<Account>, subscriptions?: Array<Channel>)
     {
         this.user = user;
         this.id = id || 0;
