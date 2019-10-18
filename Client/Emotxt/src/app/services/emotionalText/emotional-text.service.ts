@@ -117,8 +117,8 @@ export class EmotionalTextService {
     color = this.blendColors(color, newYellow);
     color = this.blendColors(color, newOrange);
     color = this.blendColors(color, newGrey);
-    color = this.rgbToHex(color);
-    body.style.color = color.toString();
+    let hex = this.rgbToHex(color);
+    body.style.color = hex.toString();
     return body;
   }
 }
