@@ -17,7 +17,7 @@ phases:
     commands:
       #- cd ./Server/
       - mvn clean package
-      - mv target/Emotxt-0.0.1-SNAPSHOT.war ./Emotxt-0.0.1-SNAPSHOT.war
+      - mv target/Emotxt.war ./Emotxt-0.0.1-SNAPSHOT.war
     
 artifacts:
   files:
