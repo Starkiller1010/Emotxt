@@ -85,12 +85,12 @@ public class UserRepository {
 	public User getUserByCredentials(String username, String password) {
 		
 		log.info("Getting user by credentials.");
-		String query = "from Users where username = :un and password = :passwd";
+		String query = "from User where username = :un and password = :passwd";
 		
 		try {
 			return sessionFactory.getCurrentSession().createQuery(query, User.class)
-					.setParameter(1, username)
-					.setParameter(2, password)
+					.setParameter("un", username)
+					.setParameter("passwd", password)
 					.getSingleResult();
 		}
 		

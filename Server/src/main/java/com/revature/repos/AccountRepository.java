@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.Query;
 
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,22 +32,20 @@ public class AccountRepository {
 	}
 
 	public Account getById(int id) {
-		Account account = factory.openSession().get(Account.class, id);
-		return account;
+		return factory.getCurrentSession().get(Account.class, id);
 	}
 	
-
-	
 	public List<User> getAccountFriends(int accountId) {
-		String query = "select username from Friends_list "
-				+ "join accounts on Accounts.account_id = Freinds_list.me "
-				+ "join acounts on Accounts.account_id = Friends_list.them "
-				+ "join users on Users.user_id = Accounts.userInfo "
-				+ "where Accounts.account_id = :accountId";
+		/*
+		String query = "select f.them from Friend f "
+				+ "join Account a on a.account_id = f.me "
+				+ "where a.account_id = :accountId";
+		*/
+		String query = "select users.user_id, users.username, users.email, accounts.state, accounts.country from users join accounts on users.user_id = accounts.account_user where accounts.account_id in (select friends_list.them from friends_list join accounts on friends_list.me = accounts.account_id"
+				+ " where accounts.account_id = " + accountId + ")";
+				
 		
-		return factory.getCurrentSession().createQuery(query, User.class)
-			.setParameter("accountId", accountId)
-			.getResultList();
+		return factory.getCurrentSession().createNativeQuery(query).getResultList();
 
 	}
 	
@@ -72,7 +71,7 @@ public class AccountRepository {
 		persistentAccount.setBio(updatedAccount.getBio());
 		persistentAccount.setCountry(updatedAccount.getCountry());
 		persistentAccount.setState(updatedAccount.getState());
-		persistentAccount.setFriendsList(updatedAccount.getFriendsList());
+		persistentAccount.setFriends(updatedAccount.getFriends());
 		persistentAccount.setSubscriptions(updatedAccount.getSubscriptions());
 		persistentAccount.setStatus(updatedAccount.getStatus());
 		return true;

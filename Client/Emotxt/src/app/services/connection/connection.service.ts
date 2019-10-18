@@ -63,7 +63,7 @@ export class ConnectionService {
    * @return  A `Observable<HttpResponse<object>>` that was returned by the API endpoint.
    */
   sendPost = (route: string, body, headers?: HttpHeaders) => {
-    return this.http.post(`${env.api_url}/${route}`, body, { headers }).pipe(
+    return this.http.post(`${env.api_url}/${route}`, body, { observe: 'response', headers }).pipe(
       map(resp => {
         console.log(`In ConnectionService.sendPost(), retrieved: ${resp}`);
         return resp as HttpResponse<object>;
