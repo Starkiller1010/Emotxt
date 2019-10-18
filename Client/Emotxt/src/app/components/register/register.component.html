@@ -9,14 +9,15 @@
       <div *ngIf="submitted && fields.username.errors">
         <p *ngIf="fields.username.errors.required">Username is required!</p>
         <p *ngIf="fields.username.errors.minimum">Username is too short!</p>
-        <div *ngIf="fields.username.errors">
+        
+        <!-- <div *ngIf="fields.username.errors">
             <p> Usernames must: </p>
             <ol>
               <li>Start with a letter.</li>
               <li>Consist of only letters, numbers and underscores.</li>
               <li>Be a minimum of 6 characters long.</li>
             </ol>
-        </div>
+        </div> -->
       </div>
     </div>
 

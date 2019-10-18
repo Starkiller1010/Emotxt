@@ -1,7 +1,7 @@
 import { Message } from '../message/message'
 
 export class User {
-    id: number;
+    user_id: number;
     username: String;
     password: String;
     email: String;
@@ -11,7 +11,7 @@ export class User {
     constructor(un: string, pw: string, email: string, 
         id?: number, messages?: Array<Message>, token?: string)
     {
-        this.id = id || 0;
+        this.user_id = id || 0;
         this.username = un;
         this.password = pw;
         this.email = email;
