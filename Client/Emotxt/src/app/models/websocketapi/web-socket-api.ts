@@ -1,15 +1,14 @@
 import * as SockJS from 'sockjs-client';
 import * as Stomp from 'stompjs';
-import { AppComponent } from '../../app.component';
-import { Component } from '@angular/compiler/src/core';
 import { TestingComponent } from 'src/app/components/testing/testing.component';
+import { Message } from '../message/message';
 
 export class WebSocketAPI {
 
   webSocketEndPoint = 'http://localhost:8080/Emotxt/socket';
-  // webSocketEndPoint = 'ws://localhost:8080/ws';
-  topic = '/topic/greetings';
-  // topic = 'http://localhost:8080/topic/greetings';
+  topic = '/topic/';
+  dest: string;
+
   stompClient: any;
   appComponent: TestingComponent;
 
@@ -17,15 +16,15 @@ export class WebSocketAPI {
         this.appComponent = appComponent;
     }
 
-    _connect() {
+    _connect(uri: string) {
+        this.dest = uri;
         console.log('Initialize WebSocket Connection');
         const ws = new SockJS(this.webSocketEndPoint);
         this.stompClient = Stomp.over(ws);
         this.stompClient.connect({}, (frame) => {
-          this.stompClient.subscribe(this.topic, (sdkEvent) => {
+          this.stompClient.subscribe(this.topic + this.dest, (sdkEvent) => {
             this.onMessageReceived(sdkEvent);
             });
-            // _this.stompClient.reconnect_delay = 2000;
         }, this.errorCallBack);
     }
 
@@ -41,7 +40,7 @@ export class WebSocketAPI {
         console.log('errorCallBack -> ' + error);
         setTimeout(() => {
           if (this !== null) {
-               this._connect(); }
+               this._connect(this.dest); }
         }, 5000);
     }
 
@@ -49,14 +48,16 @@ export class WebSocketAPI {
   * Send message to sever via web socket
   * @param `message` description
   */
-    _send(message) {
+    _send(message: string, author: string) {
         console.log('sending message api via web socket');
-        // this.stompClient.send('localhost:8080/app/hello', {}, JSON.stringify(message));
-        this.stompClient.send('/app/hello', {}, JSON.stringify(message));
+        const letter = new Message(message, author, this.dest);
+        this.stompClient.send('/app/hello', {}, JSON.stringify(letter));
     }
 
     onMessageReceived(message) {
-        console.log('Message Received from Server :: ' + message);
-        this.appComponent.handleMessage(JSON.stringify(message.body));
+      console.dir(message);
+      console.log('Message Received from Server :: ' + message.body);
+      const content = JSON.parse(message.body);
+      this.appComponent.handleMessage(content['body'], content['author'], content['emotion']);
     }
 }

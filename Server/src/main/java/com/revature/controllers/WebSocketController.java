@@ -1,14 +1,13 @@
 package com.revature.controllers;
 
-import com.revature.models.Greeting;
-import com.revature.models.HelloMessage;
+import com.revature.apis.EmotionAPI;
+import com.revature.dtos.Letter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.util.HtmlUtils;
 
 @Controller
 public class WebSocketController {
@@ -21,11 +20,12 @@ public class WebSocketController {
    }
 
    @MessageMapping("/hello")
-  // @SendTo("/topic/greetings")
-   public void onReceivedMessage(String message) throws Exception {
-      System.out.println("Endpoint hit" + message);
-      // template.convertAndSend("/topic/greetings", "Got Message");
-     // return "Got Message";
+   //@SendTo("/topic/hello")
+   public void onReceivedMessage(Letter message) throws Exception {
+      System.out.println("Endpoint hit and received this: " + message);
+      String emo = EmotionAPI.getInstance().emotionGuage(message.getBody());
+      template.convertAndSend("/topic/"+message.getDestination(),  new Letter(message.getBody(), message.getAuthor(), emo));
+      //return new Letter(message.getBody(), message.getAuthor(), emo);
    }
  
 }
