@@ -1,13 +1,18 @@
 export class Principal {
     id: number;
+    accountId: number;
     username: string;
     role: string;
-    jwt: string;
+    country: string;
+    state: string;
+    friends: [];
+    channels: [];
 
-    constructor(id: number, un: string, role: string, token: string) {
+    
+
+    constructor(id: number, un: string, role: string) {
         this.id = id;
         this.username = un;
-        this.role = role;
-        this.jwt = token;
+        this.role = role;  
     }
 }
