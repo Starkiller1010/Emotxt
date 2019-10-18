@@ -1,3 +1,30 @@
-<p>
-  login works!
-</p>
+
+<div id="login-form">
+  <h2>Login</h2>
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input type="text" class="form-control" formControlName="username"
+        [ngClass]="{'is-invalid': submitted && fields.username.errors}"/>
+      <div *ngIf="submitted && fields.username.errors">
+        <p *ngIf="fields.username.errors.required">Username is required!</p>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" class="form-control" formControlName="password"
+        [ngClass]="{'is-invalid': submitted && fields.password.errors}"/>
+      <div *ngIf="submitted && fields.password.errors">
+        <p *ngIf="fields.password.errors.required">Password is required!</p>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <button [disabled]="loading" class="btn btn-primary">Login</button>
+      <img id="loading-img" src="../../../assets/loading.gif" *ngIf="loading"/>
+    </div>
+
+  </form>
+</div>
