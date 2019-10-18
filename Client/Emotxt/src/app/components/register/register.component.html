@@ -1,3 +1,69 @@
-<p>
-  register works!
-</p>
+<div id="registration-form">
+  <h2>Register</h2>
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input type="text" class="form-control" formControlName="username"
+        [ngClass]="{'is-invalid': submitted && fields.username.errors}"/>
+      <div *ngIf="submitted && fields.username.errors">
+        <p *ngIf="fields.username.errors.required">Username is required!</p>
+        <p *ngIf="fields.username.errors.minimum">Username is too short!</p>
+        
+        <!-- <div *ngIf="fields.username.errors">
+            <p> Usernames must: </p>
+            <ol>
+              <li>Start with a letter.</li>
+              <li>Consist of only letters, numbers and underscores.</li>
+              <li>Be a minimum of 6 characters long.</li>
+            </ol>
+        </div> -->
+      </div>
+    </div>
+
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input type="text" class="form-control" formControlName="password"
+          [ngClass]="{'is-invalid': submitted && fields.password.errors}"/>
+        <div *ngIf="submitted && fields.password.errors">
+          <p *ngIf="fields.password.errors.required">Password is required!</p>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input type="text" class="form-control" formControlName="email"
+          [ngClass]="{'is-invalid': submitted && fields.email.errors}"/>
+        <div *ngIf="submitted && fields.email.errors">
+          <p *ngIf="fields.email.errors.required">Email is required!</p>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="country">Country</label>
+        <input type="text" class="form-control" formControlName="country"/>
+        <div *ngIf="submitted && fields.country.errors">
+          <p *ngIf="fields.country.errors">Error in country input!</p>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="state">State</label>
+        <input type="text" class="form-control" formControlName="state"
+          [ngClass]="{'is-invalid': submitted && fields.state.errors}"/>
+        <div *ngIf="submitted && fields.state.errors">
+          <p *ngIf="fields.state.errors">Error in state input!</p>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="bio">Bio</label>
+        <input type="text" class="form-control" formControlName="bio"/>
+    </div>
+
+    <div class="form-group">
+        <button [disabled]="loading" class="btn btn-primary">Register</button>
+    </div>
+
+  </form>
+</div>
