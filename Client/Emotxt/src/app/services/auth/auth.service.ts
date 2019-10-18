@@ -37,13 +37,22 @@ export class AuthService {
     this.conn.sendPost('auth', JSON.stringify(creds), httpHeaders).subscribe(resp => {
       console.log("In auth service resp");
       console.log(resp);
-      resp.headers.get('Authorization');
       
-      //let principal = new Principal(id, un, role, token);
-      //console.log("princiapl in authService: " + pr);
+      let principal = new Principal(
+        resp.body.id,
+        resp.body.username,
+        resp.body.role
+      );
+      principal.accountId = resp.body.account_id;
+      principal.state = resp.body.state;
+      principal.country = resp.body.country;
+
+      console.log(principal);
+      
       console.log(resp.headers.get('Authorization'));
       localStorage.setItem('emo-jwt', resp.headers.get('Authorization'));
-      //this.currentUserSubject.next(principal);
+      this.currentUserSubject.next(principal);
+
 
       console.log('Login Successful');
       console.log('navigating to dashboard...');

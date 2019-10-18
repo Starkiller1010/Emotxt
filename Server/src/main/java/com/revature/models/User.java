@@ -42,9 +42,6 @@ public class User {
 
     @OneToMany(mappedBy = "author", fetch = FetchType.EAGER)
     private List<Message> userMessages;
-    
-//    @OneToOne(mappedBy="user")
-//    private Account account;
 
     public int getId() {
         return id;

@@ -32,7 +32,8 @@ public class AccountService {
 	
 	@Transactional(readOnly=true)
 	public Account getAccountById(int id) {
-		return accountRepo.getById(id);
+		Account acct = accountRepo.getById(id);
+		return acct;
 	}
 	
 	@Transactional(readOnly=true) 

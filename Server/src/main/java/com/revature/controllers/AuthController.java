@@ -18,10 +18,12 @@ import com.revature.dtos.Credentials;
 import com.revature.dtos.ErrorResponse;
 import com.revature.dtos.Principal;
 import com.revature.exceptions.BadRequestException;
+import com.revature.models.Account;
 import com.revature.models.Role;
 import com.revature.models.User;
 import com.revature.security.JwtConfig;
 import com.revature.security.JwtGenerator;
+import com.revature.services.AccountService;
 import com.revature.services.UserService;
 
 @RestController
@@ -30,11 +32,13 @@ import com.revature.services.UserService;
 public class AuthController {
 
 	private UserService userService;
+	private AccountService accountService;
 	private Logger log = LogManager.getLogger(AuthController.class);
 	
 	@Autowired
-	public AuthController(UserService service) {
+	public AuthController(UserService service, AccountService acctservice) {
 		this.userService = service;
+		this.accountService = acctservice;
 	}
 	
 	
@@ -42,10 +46,22 @@ public class AuthController {
 	public Principal authenticate(@RequestBody Credentials creds, HttpServletResponse resp) {
 		log.info("in the auth controller to handle credentials object in request body: " + creds);
 		User user = userService.getByCredentials(creds);
+		Account account = null;
+		if(user.getId()>0) {
+			account = accountService.getAccountById(user.getId());
+		}
+		
 		Principal payload = new Principal();
 		payload.setId(user.getId());
 		payload.setRole(Role.USER);
 		payload.setUsername(user.getUsername());
+		if(account != null) {
+			payload.setAccount_id(account.getId());
+			payload.setCountry(account.getCountry());
+			payload.setState(account.getState());
+			payload.setFriends(account.getFriends());
+			payload.setSubscriptions(account.getSubscriptions());
+		}
 		resp.setHeader(JwtConfig.HEADER, JwtConfig.PREFIX + JwtGenerator.createJwt(payload));
 		return payload;
 	}

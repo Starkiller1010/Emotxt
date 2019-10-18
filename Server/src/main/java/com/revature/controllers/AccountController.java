@@ -45,7 +45,7 @@ public class AccountController {
 	}
 	
 	@GetMapping(value="/{id}/friends", produces="application/json")
-	public List<Account> getAccountFriends(@PathVariable int id) {
+	public List<User> getAccountFriends(@PathVariable int id) {
 		if(id < 1) {
 			throw new BadRequestException("Invalid id for account.");
 		}

@@ -35,14 +35,14 @@ public class AccountRepository {
 		return factory.getCurrentSession().get(Account.class, id);
 	}
 	
-	public List<Account> getAccountFriends(int accountId) {
+	public List<User> getAccountFriends(int accountId) {
 		/*
 		String query = "select f.them from Friend f "
 				+ "join Account a on a.account_id = f.me "
 				+ "where a.account_id = :accountId";
 		*/
-		String query = "select friends_list.them from friends_list join accounts on friends_list.me = accounts.account_id"
-				+ " where accounts.account_id = " + accountId;
+		String query = "select users.user_id, users.username, users.email, accounts.state, accounts.country from users join accounts on users.user_id = accounts.account_user where accounts.account_id in (select friends_list.them from friends_list join accounts on friends_list.me = accounts.account_id"
+				+ " where accounts.account_id = " + accountId + ")";
 				
 		
 		return factory.getCurrentSession().createNativeQuery(query).getResultList();

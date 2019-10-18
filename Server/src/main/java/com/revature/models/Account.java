@@ -69,9 +69,8 @@ public class Account {
         joinColumns = {@JoinColumn(name="me", referencedColumnName = "account_id")},
         inverseJoinColumns= {@JoinColumn(name="them", referencedColumnName = "account_id")}
         )
-    private List<Account> friendsList;
-    
-
+    private List<Account> friends;
+ 
     
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
@@ -105,7 +104,7 @@ public class Account {
 		this.country = country;
 		this.state = state;
 		this.bio = bio;
-		this.friendsList = friendsList;
+		this.friends = friendsList;
 		this.subscriptions = subscriptions;
 	}
 
@@ -114,20 +113,20 @@ public class Account {
 		this.country = country;
 		this.state = state;
 		this.bio = bio;
-		this.friendsList = friendsList;
+		this.friends = friendsList;
 		this.subscriptions = subscriptions;
 	}
 
 	public Account(String bio, List<Account> friendsList, List<Channel> subscriptions) {
 		super();
 		this.bio = bio;
-		this.friendsList = friendsList;
+		this.friends = friendsList;
 		this.subscriptions = subscriptions;
 	}
 
 	public Account(List<Account> friendsList, List<Channel> subscriptions) {
 		super();
-		this.friendsList = friendsList;
+		this.friends = friendsList;
 		this.subscriptions = subscriptions;
 	}
 
@@ -163,12 +162,12 @@ public class Account {
 		this.bio = bio;
 	}
 
-	public List<Account> getFriendsList() {
-		return friendsList;
+	public List<Account> getFriends() {
+		return friends;
 	}
 
-	public void setFriendsList(List<Account> friendsList) {
-		this.friendsList = friendsList;
+	public void setFriends(List<Account> friendsList) {
+		this.friends = friendsList;
 	}
 
 	public List<Channel> getSubscriptions() {
@@ -202,7 +201,7 @@ public class Account {
 		int result = 1;
 		result = prime * result + ((bio == null) ? 0 : bio.hashCode());
 		result = prime * result + ((country == null) ? 0 : country.hashCode());
-		result = prime * result + ((friendsList == null) ? 0 : friendsList.hashCode());
+		result = prime * result + ((friends == null) ? 0 : friends.hashCode());
 		result = prime * result + id;
 		result = prime * result + ((state == null) ? 0 : state.hashCode());
 		result = prime * result + ((subscriptions == null) ? 0 : subscriptions.hashCode());
@@ -229,10 +228,10 @@ public class Account {
 				return false;
 		} else if (!country.equals(other.country))
 			return false;
-		if (friendsList == null) {
-			if (other.friendsList != null)
+		if (friends == null) {
+			if (other.friends != null)
 				return false;
-		} else if (!friendsList.equals(other.friendsList))
+		} else if (!friends.equals(other.friends))
 			return false;
 		if (id != other.id)
 			return false;
@@ -252,7 +251,7 @@ public class Account {
 
 	@Override
 	public String toString() {
-		return "Account [id=" + id + ", country=" + country + ", state=" + state + ", status=" + status + ", bio=" + bio + ", friendsList="
-				+ friendsList + ", subscriptions=" + subscriptions + "]";
+		return "Account [id=" + id + ", country=" + country + ", state=" + state + ", status=" + status + ", bio=" + bio + ", friends="
+				+ friends + ", subscriptions=" + subscriptions + "]";
 	}
 }
