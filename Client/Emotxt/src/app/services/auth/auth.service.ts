@@ -4,8 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Principal } from '../../models/principal/principal';
-import { environment as env } from '../../../environments/environment';
-import { ConditionalExpr } from '@angular/compiler';
+
 
 @Injectable({
   providedIn: 'root'
