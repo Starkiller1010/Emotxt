@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { ConnectionService } from '../connection/connection.service';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Principal } from '../../models/principal/principal';
 import { environment as env } from '../../../environments/environment';
+import { ConditionalExpr } from '@angular/compiler';
 
 @Injectable({
   providedIn: 'root'
@@ -24,12 +25,26 @@ export class AuthService {
   }
 
   doLogin = (username: string, password: string) => {
-    let creds = { username, password };
-    this.conn.sendPost('auth', creds).subscribe(resp => {
-      let principal = resp.body as Principal;
-      principal.jwt = resp.headers.get('Authorization');
+    
+    let creds = { "username": username, "password": password };
+    const httpHeaders = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+
+    console.log('In the login before request');
+    // console.log(creds);
+    // console.log(httpHeaders);
+
+    this.conn.sendPost('auth', JSON.stringify(creds), httpHeaders).subscribe(resp => {
+      console.log("In auth service resp");
+      console.log(resp);
+      resp.headers.get('Authorization');
+      
+      //let principal = new Principal(id, un, role, token);
+      //console.log("princiapl in authService: " + pr);
+      console.log(resp.headers.get('Authorization'));
       localStorage.setItem('emo-jwt', resp.headers.get('Authorization'));
-      this.currentUserSubject.next(principal);
+      //this.currentUserSubject.next(principal);
 
       console.log('Login Successful');
       console.log('navigating to dashboard...');
