@@ -1,6 +1,7 @@
 package com.revature;
 
-import javax.servlet.ServletRegistration;
+import com.revature.config.AppConfig;
+import com.revature.config.WebSocketConfig;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 

@@ -32,7 +32,7 @@ public class Channel {
 
     @Id
     @Column(name = "channel_id", nullable = false, unique = true)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "channel_gen_id")
     private int id; 											// Identification number that is unique
 
     @ManyToMany(cascade = CascadeType.REMOVE)
@@ -41,11 +41,9 @@ public class Channel {
     			joinColumns = @JoinColumn(referencedColumnName = "channel_id"), 
     			inverseJoinColumns = @JoinColumn(referencedColumnName = "user_id"))
     @MapKeyEnumerated(value=EnumType.STRING)
-
     private Map <Role, User> members;
 
-    @OneToMany
-    @JoinColumn(name = "message_id")
+    @OneToMany(mappedBy = "destination")
     private List<Message> messages; // List of messages that have been made in this Channel
     
     @ManyToMany(mappedBy = "subscriptions", fetch=FetchType.LAZY)

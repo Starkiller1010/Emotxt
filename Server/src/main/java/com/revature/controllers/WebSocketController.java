@@ -5,7 +5,6 @@ import com.revature.dtos.Letter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
@@ -20,12 +19,10 @@ public class WebSocketController {
    }
 
    @MessageMapping("/hello")
-   //@SendTo("/topic/hello")
    public void onReceivedMessage(Letter message) throws Exception {
       System.out.println("Endpoint hit and received this: " + message);
       String emo = EmotionAPI.getInstance().emotionGuage(message.getBody());
       template.convertAndSend("/topic/"+message.getDestination(),  new Letter(message.getBody(), message.getAuthor(), emo));
-      //return new Letter(message.getBody(), message.getAuthor(), emo);
    }
  
 }
