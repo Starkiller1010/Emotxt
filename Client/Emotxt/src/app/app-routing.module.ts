@@ -8,6 +8,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { FriendslistComponent } from './components/friendslist/friendslist.component';
 import { MessageboardComponent } from './components/messageboard/messageboard.component';
 import { AccountComponent } from './components/account/account.component';
+import { ChannellistComponent } from './components/channel/channellist.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -18,7 +19,8 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'friendslist', component: FriendslistComponent},
-  {path: 'account', component: AccountComponent}
+  {path: 'account', component: AccountComponent},
+  {path: 'channel', component: ChannellistComponent}
 ];
 
 @NgModule({

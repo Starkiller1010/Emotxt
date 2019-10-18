@@ -66,6 +66,10 @@ export class AuthService {
     });
   }
 
+  doLogout() {
+    localStorage.removeItem('emo-jwt');
+  }
+
   doRegister = () => {
     this.conn.sendGet('').subscribe(resp => {
 

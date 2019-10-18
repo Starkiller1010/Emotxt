@@ -10,7 +10,8 @@ export class LandingComponent implements OnInit {
 
   constructor(private authService: AuthService) { }
 
-  username = this.authService.currentUser$.subscribe(user => user.username );
+  username;
+  usernameSub = this.authService.currentUser$.subscribe(user => this.username = user.username );
 
   ngOnInit() {
 

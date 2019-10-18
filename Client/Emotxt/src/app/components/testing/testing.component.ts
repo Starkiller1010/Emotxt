@@ -54,12 +54,12 @@ export class TestingComponent implements OnInit, OnDestroy {
 
     console.log(`author: ${author} | name: ${this.name}`);
 
+    incoming.style.backgroundColor = 'darkgrey';
     if (author === this.name) {
-      incoming.style.backgroundColor = 'lightblue';
       content.appendChild(padding);
       content.appendChild(body);
     } else {
-      incoming.style.backgroundColor = 'lightgrey';
+      // incoming.style.backgroundColor = 'lightgrey';
       content.appendChild(body);
       content.appendChild(padding);
     }
