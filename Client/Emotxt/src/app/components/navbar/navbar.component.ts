@@ -24,6 +24,11 @@ export class NavbarComponent implements OnInit {
   ngOnInit() {
   }
 
+  onLogout = () => {
+    this.auth.doLogout();
+    this.router.navigate(['home']);
+  }
+
   onCollapse = () => {
     if (!this.isCollapsed) {
     document.getElementById('sidebar').classList.add('inactive');
