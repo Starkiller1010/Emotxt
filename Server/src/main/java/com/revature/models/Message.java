@@ -30,7 +30,7 @@ public class Message {
     private String body;
 
     @ManyToOne(cascade =CascadeType.ALL)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "author")
     private User author;
 
     @Column
@@ -148,14 +148,6 @@ public class Message {
     public String toString() {
         return "Message [author=" + author.getId() + ", Tone=" + Tone + ", body=" + body + ", createdStamp=" + createdStamp
                 + ", id=" + id + "]";
-    }
-
-    public User getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(User author) {
-        this.author = author;
     }
 
     public Channel getDestination() {
