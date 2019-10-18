@@ -23,7 +23,7 @@ public class Message {
 
     @Id
     @Column(name = "message_id", nullable = false, unique = true)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "message_gen_id")
     private int id;
 
     @Column
@@ -36,19 +36,25 @@ public class Message {
     @Column
     private Timestamp createdStamp;
 
-    private int Tone;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "destination")
+    private Channel destination;
+
+    @Column
+    private String Tone;
 
     public Message() {
         super();
     }
 
-    public Message(String body, User author) {
+    public Message(String body, User author, Channel destination) {
         this.body = body;
         this.author = author;
+        this.destination = destination;
         this.createdStamp = new Timestamp(System.currentTimeMillis());
     }
 
-    public Message(int id, String body, User author, Timestamp createdStamp, int tone) {
+    public Message(int id, String body, User author, Timestamp createdStamp, String tone) {
         this.id = id;
         this.body = body;
         this.author = author;
@@ -88,11 +94,11 @@ public class Message {
         this.createdStamp = createdStamp;
     }
 
-    public int getTone() {
+    public String getTone() {
         return Tone;
     }
 
-    public void setTone(int tone) {
+    public void setTone(String tone) {
         Tone = tone;
     }
 
@@ -101,7 +107,6 @@ public class Message {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((author == null) ? 0 : author.hashCode());
-        result = prime * result + Tone;
         result = prime * result + ((body == null) ? 0 : body.hashCode());
         result = prime * result + ((createdStamp == null) ? 0 : createdStamp.hashCode());
         result = prime * result + id;
@@ -143,6 +148,22 @@ public class Message {
     public String toString() {
         return "Message [author=" + author.getId() + ", Tone=" + Tone + ", body=" + body + ", createdStamp=" + createdStamp
                 + ", id=" + id + "]";
+    }
+
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
+    }
+
+    public Channel getDestination() {
+        return destination;
+    }
+
+    public void setDestination(Channel destination) {
+        this.destination = destination;
     }
 
 
