@@ -11,40 +11,15 @@ phases:
       # (which cannot be obtained from the Maven central repo), we can use this 
       # command to install it into this environment's .m2 directory. Assuming
       # that the jar is available to us from some place.
-      - echo Changing directory to Server to pre-build server
-      - pushd ./Server/
+      - cd ./Server/
       - mvn install:install-file -Dfile=./src/main/resources/ojdbc7-11.2.0.jar -DgroupId=com.oracle -DartifactId=ojdbc7 -Dversion=11.2.0 -Dpackaging=jar
-      - popd
-      - echo Changing directory to Client code
-      - pushd ./Client/Emotxt
-      - echo Installing NPM source dependencies
-      - npm install
-      - echo Installing Angular CLI
-      - npm install -g @angular/cli
-      
   build:
     commands:
-      - echo Beginning build of Server on `date`
-      - pwd
       #- cd ./Server/
       - mvn clean package
-      - mv target/Emotxt.war ./Emotxt-0.0.1-SNAPSHOT.war
-      - echo Building client code on `date`
-      - pushd ./Client/Emotxt
-      - ng build
-      - echo Builds completed on `date`
-      
-  post_bulid:
-    commands:
-      - echo Beginning post build
-      - echo Navigating to Client code
-      - cd ./Client/Emotxt/
-      - echo Moving dist folder to S3 bucket
-      - aws s3 sync --delete dist/Emotxt s3:://codepipeline-us-east-2-803853266819
-      - echo Moved dist folder successfully
+      - mv target/Emotxt-0.0.1-SNAPSHOT.war ./Emotxt-0.0.1-SNAPSHOT.war
     
 artifacts:
   files:
     - ./Server/Emotxt-0.0.1-SNAPSHOT.war
-    - ./Client/Emotxt/dist/*
     - .ebextensions/**/*
