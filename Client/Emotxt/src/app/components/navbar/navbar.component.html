@@ -14,7 +14,7 @@
                     <a [routerLink]="['/home']">Home</a>
                 </li>
                 <li>
-                    <a [routerLink]="['/test']">Test</a>
+                    <a *ngIf="currentPrincipal" [routerLink]="['/message-board']">MessageBoard</a>
                 </li>
                 <li>
                     <a [routerLink]="['/login']">Login</a>
