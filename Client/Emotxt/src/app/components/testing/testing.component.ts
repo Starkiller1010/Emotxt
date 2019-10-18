@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { WebSocketAPI } from 'src/app/models/websocketapi/web-socket-api';
-import { Message } from 'src/app/models/message/message';
+import { EmotionalTextService } from 'src/app/services/emotionalText/emotional-text.service';
 
 @Component({
   selector: 'app-testing',
@@ -11,10 +11,11 @@ export class TestingComponent implements OnInit, OnDestroy {
 
   webSocketAPI: WebSocketAPI;
   name: string;
-  constructor() { }
+
+  constructor(private converter: EmotionalTextService) { }
 
   ngOnDestroy(): void {
-    this.disconnect();
+   // this.disconnect();
   }
   ngOnInit() {
     this.webSocketAPI = new WebSocketAPI(this);
@@ -32,9 +33,10 @@ export class TestingComponent implements OnInit, OnDestroy {
     this.webSocketAPI._send(msg, this.name);
   }
 
-  handleMessage(message: string, author: string) {
+  handleMessage(message: string, author: string, emotion: string) {
     console.log(message);
     console.log(author);
+
     const messages = document.getElementById('message-list');
 
     const body = document.createElement('div');
@@ -46,14 +48,13 @@ export class TestingComponent implements OnInit, OnDestroy {
     padding.classList.add('col-md-7');
 
 
-    const incoming = document.createElement('p');
+    let incoming = document.createElement('p');
     body.appendChild(incoming);
 
     console.log(`author: ${author} | name: ${this.name}`);
 
     if (author === this.name) {
       incoming.style.backgroundColor = 'lightblue';
-      // incoming.style.textAlign = 'right';
       content.appendChild(padding);
       content.appendChild(body);
     } else {
@@ -61,15 +62,16 @@ export class TestingComponent implements OnInit, OnDestroy {
       content.appendChild(body);
       content.appendChild(padding);
     }
-    // incoming.style.padding = '10rem';
+
     incoming.style.textAlign = 'left';
     incoming.style.borderRadius = '12%';
 
+    incoming = this.converter.convertUsingEmotion(emotion, message, incoming);
     incoming.innerText =
     // tslint:disable-next-line: max-line-length
-    (`At: ${new Date().getMonth() + 1}/${new Date().getDay()}/${new Date().getFullYear()}::${new Date().getHours()}:${new Date().getMinutes()}
+    (`At: ${new Date().getMonth() + 1}/${new Date().getDay()}/${new Date().getFullYear()}: ${new Date().getHours()}:${new Date().getMinutes()}
     By: ${author}
-    "${message}"`);
+    Message: \n"${message}"`);
     messages.appendChild(content);
   }
 }

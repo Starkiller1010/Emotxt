@@ -9,6 +9,8 @@ public class Letter {
 
     private String author;
 
+    private String emotion;
+
     public Letter() {
         super();
     }
@@ -16,6 +18,12 @@ public class Letter {
     public Letter(String body, String author) {
         this.body = body;
         this.author = author;
+    }
+
+    public Letter(String body, String author, String emo) {
+        this.body = body;
+        this.author = author;
+        this.emotion = emo;
     }
 
     public String getBody() {
@@ -68,5 +76,13 @@ public class Letter {
     @Override
     public String toString() {
         return "Letter [author=" + author + ", body=" + body + "]";
-    }    
+    }
+
+    public String getEmotion() {
+        return emotion;
+    }
+
+    public void setEmotion(String emotion) {
+        this.emotion = emotion;
+    }
 }
